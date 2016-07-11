@@ -19,3 +19,9 @@ void Renderer::onUpdatePos(qreal x, qreal y)
     this->setPosition(QPointF(x, y));
     update();
 }
+
+void Renderer::onUpdateSize(qreal width, qreal height)
+{
+    this->setSize(QSizeF(width, height));
+    update();
+}

@@ -1,21 +1,17 @@
 #include "game.h"
 #include<QPainter>
+#include<QDebug>
 
+#include "game/board.h"
 Game::Game(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
-    QImage* image = new QImage(":/sprites/wall.png", "PNG");
+    tileSprites[0] = QImage(":/sprites/air.png");
+    tileSprites[1] = QImage(":/sprites/wall.png");
 
-    Body* body = new Body(20, 30, 40, 40, 2);
-    Renderer* ren = new Renderer(image, this);
+    Board* b = new Board(400,300);
+    b->loadBoard("level.json", new TileBuilder(this, tileSprites));
 
-    Body* body2 = new Body(60, 30, 40, 40, 2);
-    Renderer* ren2 = new Renderer(image, this);
-
-    tile = new Tile(body, ren, true);
-    Tile* tile2 = new Tile(body2, ren2, false);
-
-    qDebug() << tile->body()->collidesWith(tile2->body());
 }
 
 void Game::paint(QPainter *)

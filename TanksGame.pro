@@ -8,9 +8,12 @@ SOURCES += main.cpp \
     components/renderer.cpp \
     components/body.cpp \
     entities/tile.cpp \
-    game/board.cpp
+    game/board.cpp \
+    factories/tilebuilder.cpp
 
 RESOURCES += qml.qrc
+
+QMAKE_CXXFLAGS += -Wall
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -23,4 +26,5 @@ HEADERS += \
     components/renderer.h \
     components/body.h \
     entities/tile.h \
-    game/board.h
+    game/board.h \
+    factories/tilebuilder.h

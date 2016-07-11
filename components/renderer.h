@@ -11,6 +11,7 @@ public:
     void paint(QPainter *painter);
 public slots:
     void onUpdatePos(qreal x, qreal y);
+    void onUpdateSize(qreal width, qreal height);
 private:
     QImage* m_image;
 };

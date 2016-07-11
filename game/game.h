@@ -2,6 +2,7 @@
 #define GAME_H
 
 #include <QQuickPaintedItem>
+#include <QImage>
 
 #include"entities/tile.h"
 
@@ -15,7 +16,7 @@ public:
 
     static void registerInQML();
 private:
-
+    QImage tileSprites[2];
 };
 
 #endif // GAME_H

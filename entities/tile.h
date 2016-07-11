@@ -10,7 +10,7 @@ class Tile : public QObject
 {
     Q_OBJECT
 public:
-    Tile(Body* body, Renderer* renderer, bool is_solid=true);
+    Tile(Body* body, Renderer* renderer, bool is_solid, QObject* parent=0);
     virtual ~Tile();
 
     Body *body() const;

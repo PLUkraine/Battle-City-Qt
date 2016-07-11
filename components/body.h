@@ -10,7 +10,7 @@ class Body : public QObject
 {
     Q_OBJECT
 public:
-    Body(qreal x, qreal y, int width, int height, qreal speed);
+    Body(qreal x, qreal y, qreal width, qreal height, qreal speed);
 
     qreal x() const;
     qreal y() const;
@@ -18,10 +18,8 @@ public:
     QPointF pos() const;
 
     int width() const;
-    void setWidth(int width);
-
     int height() const;
-    void setHeight(int height);
+    void setSize(qreal width, qreal height);
 
     qreal speed() const;
     void setSpeed(const qreal &speed);
@@ -32,10 +30,11 @@ public:
 
 signals:
     void positionChanged(qreal, qreal);
+    void sizeChanged(qreal, qreal);
 
 private:
     qreal m_x, m_y;
-    int m_width, m_height;
+    qreal m_width, m_height;
     qreal m_speed;
 };
 
