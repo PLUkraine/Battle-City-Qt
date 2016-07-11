@@ -3,4 +3,8 @@
         <file>main.qml</file>
         <file>MainForm.ui.qml</file>
     </qresource>
+    <qresource prefix="/sprites">
+        <file>wall.png</file>
+        <file>air.png</file>
+    </qresource>
 </RCC>

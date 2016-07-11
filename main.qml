@@ -9,10 +9,8 @@ Window {
     title: qsTr("Hello World")
 
     Game {
-        x: 20
-        y: 20
-        width: 20
-        height: 20
+        anchors.fill: parent
+
         visible: true
     }
 

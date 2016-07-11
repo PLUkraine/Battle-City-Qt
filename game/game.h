@@ -3,6 +3,8 @@
 
 #include <QQuickPaintedItem>
 
+#include"entities/tile.h"
+
 class Game : public QQuickPaintedItem
 {
     Q_OBJECT
@@ -12,6 +14,8 @@ public:
     void paint(QPainter *painter);
 
     static void registerInQML();
+private:
+
 };
 
 #endif // GAME_H

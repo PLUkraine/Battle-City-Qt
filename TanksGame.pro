@@ -4,7 +4,11 @@ QT += qml quick
 CONFIG += c++11
 
 SOURCES += main.cpp \
-    game/game.cpp
+    game/game.cpp \
+    components/renderer.cpp \
+    components/body.cpp \
+    entities/tile.cpp \
+    game/board.cpp
 
 RESOURCES += qml.qrc
 
@@ -15,4 +19,8 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    game/game.h
+    game/game.h \
+    components/renderer.h \
+    components/body.h \
+    entities/tile.h \
+    game/board.h
