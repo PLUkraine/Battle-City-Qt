@@ -9,7 +9,7 @@ class Tile : public Entity
 {
     Q_OBJECT
 public:
-    Tile(Body* body, Renderer* renderer, bool is_solid);
+    Tile(Body* body, Renderer* renderer, Health* health, bool is_solid);
     virtual ~Tile();
 
     void update() {}

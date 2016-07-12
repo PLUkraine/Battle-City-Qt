@@ -11,8 +11,7 @@ Game::Game(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
     // create board
-    TileBuilder* builder = new TileBuilder(this, ResBag::get().tilesSptites());
-    builder->setSize(ResBag::get().tileSize());
+    TileBuilder* builder = new TileBuilder(this);
 
     board = new Board(WINDOW_W, WINDOW_H, builder);
     board->loadBoard("level.json");

@@ -1,12 +1,17 @@
 #include "tile.h"
 
-Tile::Tile(Body *body, Renderer *renderer, bool is_solid) : Entity(),
+Tile::Tile(Body *body, Renderer *renderer, Health *health, bool is_solid) : Entity(),
     m_is_solid(is_solid)
 {
     m_body = body;
     m_renderer = renderer;
+    m_health = health;
 
     m_body->setParent(this);
+    m_health->setParent(this);
+
+    m_health->setOwner(this);
+
     wire_renderer_to_body();
 }
 

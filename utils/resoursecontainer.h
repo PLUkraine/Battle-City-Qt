@@ -35,6 +35,8 @@ public:
 
     qreal tankHealth() const;
 
+    qreal* tileHealth();
+
 private:
     QImage m_tileSprites[2];
     QImage m_tankSprite;
@@ -44,6 +46,7 @@ private:
     qreal m_tankSpeed, m_bulletSpeed;
     qreal m_bulletDamage;
     qreal m_tankHealth;
+    qreal m_tileHealth[2];
 
     ResBag();
 };

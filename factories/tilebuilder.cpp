@@ -2,19 +2,20 @@
 #include <QDebug>
 
 #include "tilebuilder.h"
+#include "factories/entitiesfactory.h"
 
 static const bool IS_SOLID[] = {
     false, true
 };
 
-TileBuilder::TileBuilder(Game *game, QImage* images)
+TileBuilder::TileBuilder(Game *game)
     : m_game(game),
       m_width(0),
       m_height(0),
       m_x_ratio(0),
-      m_y_ratio(0),
-      m_images(images)
+      m_y_ratio(0)
 {
+    setSize(ResBag::get().tileSize());
 }
 
 Tile *TileBuilder::createTile(TileBuilder::TileType type, QPointF pos)
@@ -26,9 +27,10 @@ Tile *TileBuilder::createTile(TileBuilder::TileType type, qreal x, qreal y)
 {
 
     Body* body = new Body(x, y, m_width, m_height, Direction::UP);
-    Renderer* rend = new Renderer(&m_images[type], m_x_ratio, m_y_ratio, m_game);
+    Renderer* rend = new Renderer(&ResBag::get().tilesSptites()[type], m_x_ratio, m_y_ratio, m_game);
+    Health* health = new Health(ResBag::get().tileHealth()[type]);
 
-    Tile * tile = new Tile(body, rend, IS_SOLID[type]);
+    Tile * tile = new Tile(body, rend, health, IS_SOLID[type]);
     return tile;
 }
 

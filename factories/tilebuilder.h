@@ -9,7 +9,7 @@ class TileBuilder
 public:
     enum TileType { AIR, WALL };
 
-    TileBuilder(Game* game, QImage *images);
+    TileBuilder(Game* game);
 
     Tile* createTile(TileType type, QPointF pos);
     Tile* createTile(TileType type, qreal x, qreal y);
@@ -24,7 +24,6 @@ protected:
     Game* m_game;
     qreal m_width, m_height;
     qreal m_x_ratio, m_y_ratio;
-    QImage* m_images;
 };
 
 #endif // TILEBUILDER_H

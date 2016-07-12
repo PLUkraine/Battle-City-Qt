@@ -56,6 +56,11 @@ qreal ResBag::tankHealth() const
     return m_tankHealth;
 }
 
+qreal *ResBag::tileHealth()
+{
+    return m_tileHealth;
+}
+
 ResBag::ResBag()
 {
     m_tileSprites[0] = QImage(":/sprites/air.png");
@@ -71,4 +76,7 @@ ResBag::ResBag()
     m_tankSpeed = 0.5;
     m_bulletDamage = 5;
     m_tankHealth = 5;
+
+    m_tileHealth[0] = 0;
+    m_tileHealth[1] = 5;
 }
