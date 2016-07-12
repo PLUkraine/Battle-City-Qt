@@ -5,8 +5,11 @@
 #include <QImage>
 #include <QTimer>
 
+#include <set>
+
 #include"game/board.h"
 #include"actors/player.h"
+#include"entities/bullet.h"
 
 class Board;
 class Game : public QQuickPaintedItem
@@ -25,9 +28,15 @@ public:
 
 public slots:
     void updateGame();
+    void addBullet(Bullet*);
+protected:
+    void updateBullets();
 private:
+    std::set<Bullet*> bullets;
+
     QImage tileSprites[2];
     QImage tankSprite;
+    QImage bulletSprite;
 
     QTimer timer;
 

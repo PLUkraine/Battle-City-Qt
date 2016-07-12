@@ -25,7 +25,7 @@ Tile *TileBuilder::createTile(TileBuilder::TileType type, QPointF pos)
 Tile *TileBuilder::createTile(TileBuilder::TileType type, qreal x, qreal y)
 {
 
-    Body* body = new Body(x, y, m_width, m_height);
+    Body* body = new Body(x, y, m_width, m_height, Direction::UP);
     Renderer* rend = new Renderer(&m_images[type], m_x_ratio, m_y_ratio, m_game);
 
     Tile * tile = new Tile(body, rend, IS_SOLID[type]);

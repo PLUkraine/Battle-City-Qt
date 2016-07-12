@@ -1,8 +1,24 @@
 #include "actor.h"
+#include"game/board.h"
 
 Actor::Actor(QObject *parent) : QObject(parent)
 {
 
+}
+
+void Actor::correctToTiles(Board *board, Body *body)
+{
+    qreal x=body->x();
+    qreal y=body->y();
+
+    switch (body->direction()) {
+        case Direction::LEFT: x = board->getRighTCoord(body); break;
+        case Direction::RIGHT: x = board->getLeftCoord(body); break;
+        case Direction::UP: y = board->getLowerCoord(body); break;
+        case Direction::DOWN: y = board->getUpperCoord(body); break;
+    }
+
+    body->setPosition(x, y);
 }
 
 Direction Actor::ControlToDirection(Actor::Control c)

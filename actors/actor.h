@@ -15,6 +15,8 @@ public:
 
     Actor(QObject *parent = 0);
     virtual void makeMove(Board* board, Tank* tank)=0;
+
+    static void correctToTiles(Board* board, Body* body);
     Direction ControlToDirection(Control c);
 };
 

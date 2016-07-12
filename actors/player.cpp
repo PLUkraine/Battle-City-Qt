@@ -27,7 +27,7 @@ void Player::makeMove(Board *board, Tank* tank)
     for (int i=0; i<=3; ++i)
     {
         if (m_control[i]) {
-            tank->physics()->setDirection(ControlToDirection((Control)i));
+            tank->body()->setDirection(ControlToDirection((Control)i));
             tank->update();
 
             // update properly

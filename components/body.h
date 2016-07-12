@@ -12,7 +12,7 @@ class Body : public QObject
 {
     Q_OBJECT
 public:
-    Body(qreal x, qreal y, qreal width, qreal height);
+    Body(qreal x, qreal y, qreal width, qreal height, Direction direction);
 
     qreal x() const;
     qreal y() const;
@@ -27,6 +27,9 @@ public:
 
     QRectF boundingRect() const;
 
+    Direction direction() const;
+    void setDirection(const Direction &direction);
+
 signals:
     void positionChanged(qreal, qreal);
     void sizeChanged(qreal, qreal);
@@ -34,6 +37,7 @@ signals:
 private:
     qreal m_x, m_y;
     qreal m_width, m_height;
+    Direction m_direction;
 };
 
 #endif

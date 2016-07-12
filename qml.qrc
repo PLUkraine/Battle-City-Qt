@@ -7,5 +7,6 @@
         <file>wall.png</file>
         <file>air.png</file>
         <file>tank.png</file>
+        <file>bullet.png</file>
     </qresource>
 </RCC>

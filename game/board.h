@@ -23,10 +23,13 @@ public:
     bool intersectsTiles(Body* body);
     QSizeF getTileRatio();
 
+
     qreal getLeftCoord(Body* body);
     qreal getRighTCoord(Body* body);
     qreal getUpperCoord(Body* body);
     qreal getLowerCoord(Body* body);
+    bool collidesWithBoard(Body* body);
+    bool inBoardBounds(Body* body);
 protected:
     range_p mapBodyToTiles(Body* body);
     qreal rightBound();

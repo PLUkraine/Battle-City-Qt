@@ -59,10 +59,21 @@ QRectF Body::boundingRect() const
     return QRectF(m_x, m_y, m_width, m_height);
 }
 
-Body::Body(qreal x, qreal y, qreal width, qreal height)
+Direction Body::direction() const
+{
+    return m_direction;
+}
+
+void Body::setDirection(const Direction &direction)
+{
+    m_direction = direction;
+}
+
+Body::Body(qreal x, qreal y, qreal width, qreal height, Direction direction)
     : QObject(nullptr),
       m_x(x), m_y(y),
       m_width(width),
-      m_height(height)
+      m_height(height),
+      m_direction(direction)
 {
 }

@@ -184,6 +184,29 @@ qreal Board::getLowerCoord(Body *body)
     return body->y();
 }
 
+bool Board::collidesWithBoard(Body *body)
+{
+    range_p r = mapBodyToTiles(body);
+    for (int i=max(0,r.second.first); i<=min(r.second.second, m_rows-1); i++) {
+        for (int j=max(0,r.first.first); j<=min(r.first.second, m_cols-1); ++j) {
+            int index = i*m_cols + j;
+            Tile* tile = m_tiles[index];
+            bool coll = body->collidesWith(tile->body());
+            coll &= tile->is_solid();
+            if ( coll ) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
+bool Board::inBoardBounds(Body *body)
+{
+    QRectF r(topBound(), leftBound(), rightBound(), bottomBound());
+    return r.contains(body->boundingRect().topLeft()) && r.contains(body->boundingRect().bottomRight());
+}
+
 range_p Board::mapBodyToTiles(Body *body)
 {
     qreal tile_w = m_tiles[0]->body()->width();
