@@ -5,7 +5,7 @@
 const int TILE_SIZE = 4;
 const int BULLET_SIZE = 1;
 const int TANK_SIZE = 4;
-const int TANK_SPEED = 2;
+const qreal TANK_SPEED = 0.3;
 
 const qreal WINDOW_W = 400;
 const qreal WINDOW_H = 300;
@@ -74,6 +74,5 @@ void Game::registerInQML()
 
 void Game::updateGame()
 {
-
     player->makeMove(board, playerTank);
 }

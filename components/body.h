@@ -10,28 +10,28 @@ class Body : public QObject
 {
     Q_OBJECT
 public:
-    Body(int x, int y, int width, int height);
+    Body(qreal x, qreal y, int width, int height);
 
-    int x() const;
-    int y() const;
-    void setPosition(int x, int y);
-    QPoint pos() const;
+    qreal x() const;
+    qreal y() const;
+    void setPosition(qreal x, qreal y);
+    QPointF pos() const;
 
-    int width() const;
-    int height() const;
-    void setSize(int width, int height);
+    qreal width() const;
+    qreal height() const;
+    void setSize(qreal width, qreal height);
 
     bool collidesWith(Body* other);
 
-    QRect boundingRect() const;
+    QRectF boundingRect() const;
 
 signals:
-    void positionChanged(int, int);
-    void sizeChanged(int, int);
+    void positionChanged(qreal, qreal);
+    void sizeChanged(qreal, qreal);
 
 private:
-    int m_x, m_y;
-    int m_width, m_height;
+    qreal m_x, m_y;
+    qreal m_width, m_height;
 };
 
 #endif

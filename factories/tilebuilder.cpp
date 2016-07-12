@@ -17,12 +17,12 @@ TileBuilder::TileBuilder(Game *game, QImage* images)
 {
 }
 
-Tile *TileBuilder::createTile(TileBuilder::TileType type, QPoint pos)
+Tile *TileBuilder::createTile(TileBuilder::TileType type, QPointF pos)
 {
     return createTile(type, pos.x(), pos.y());
 }
 
-Tile *TileBuilder::createTile(TileBuilder::TileType type, int x, int y)
+Tile *TileBuilder::createTile(TileBuilder::TileType type, qreal x, qreal y)
 {
 
     Body* body = new Body(x, y, m_width, m_height);
@@ -32,7 +32,7 @@ Tile *TileBuilder::createTile(TileBuilder::TileType type, int x, int y)
     return tile;
 }
 
-void TileBuilder::setSize(int tileSize)
+void TileBuilder::setSize(qreal tileSize)
 {
     m_width = m_height = tileSize;
 }
@@ -43,12 +43,12 @@ void TileBuilder::setRatio(qreal x_ratio, qreal y_ratio)
     m_y_ratio = y_ratio;
 }
 
-int TileBuilder::width() const
+qreal TileBuilder::width() const
 {
     return m_width;
 }
 
-int TileBuilder::height() const
+qreal TileBuilder::height() const
 {
     return m_height;
 }

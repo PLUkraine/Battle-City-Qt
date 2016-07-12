@@ -31,13 +31,14 @@ void Renderer::setRatio(const QSizeF &ratio)
     update();
 }
 
-void Renderer::onUpdatePos(int x, int y)
+void Renderer::onUpdatePos(qreal x, qreal y)
 {
+    //qDebug() << "NEW POS" << x << y;
     this->setPosition(QPointF(x*m_x_tile_ratio, y*m_y_tile_ratio));
     update();
 }
 
-void Renderer::onUpdateSize(int width, int height)
+void Renderer::onUpdateSize(qreal width, qreal height)
 {
     this->setSize(QSizeF(width*m_x_tile_ratio, height*m_y_tile_ratio));
     update();

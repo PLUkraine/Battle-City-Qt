@@ -11,18 +11,18 @@ public:
 
     TileBuilder(Game* game, QImage *images);
 
-    Tile* createTile(TileType type, QPoint pos);
-    Tile* createTile(TileType type, int x, int y);
+    Tile* createTile(TileType type, QPointF pos);
+    Tile* createTile(TileType type, qreal x, qreal y);
 
-    void setSize(int tileSize);
+    void setSize(qreal tileSize);
     void setRatio(qreal x_ratio, qreal y_ratio);
 
-    int width() const;
-    int height() const;
+    qreal width() const;
+    qreal height() const;
 
 protected:
     Game* m_game;
-    int m_width, m_height;
+    qreal m_width, m_height;
     qreal m_x_ratio, m_y_ratio;
     QImage* m_images;
 };

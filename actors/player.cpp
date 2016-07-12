@@ -1,7 +1,12 @@
+#include <string.h>
+
 #include "player.h"
+
 
 Player::Player(QObject *parent) : Actor(parent)
 {
+    memset(m_control, 0, sizeof(m_control));
+
     m_bind[Qt::Key_Up] = UP;
     m_bind[Qt::Key_Right] = RIGHT;
     m_bind[Qt::Key_Down] = DOWN;
@@ -19,7 +24,7 @@ void Player::makeMove(Board *, Tank* tank)
 {
     for (int i=0; i<=3; ++i)
     {
-        int speed = tank->physics()->max_speed();
+        qreal speed = tank->physics()->max_speed();
         if (m_control[i]) {
             if (i == UP || i == DOWN) {
                 tank->physics()->setYSpeed(i==UP ? -speed : speed);

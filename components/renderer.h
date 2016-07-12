@@ -12,8 +12,8 @@ public:
 
     void setRatio(const QSizeF& ratio);
 public slots:
-    void onUpdatePos(int x, int y);
-    void onUpdateSize(int width, int height);
+    void onUpdatePos(qreal x, qreal y);
+    void onUpdateSize(qreal width, qreal height);
 private:
     QImage* m_image;
     qreal m_x_tile_ratio;
