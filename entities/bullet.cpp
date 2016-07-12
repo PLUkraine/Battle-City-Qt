@@ -1,8 +1,9 @@
 #include "bullet.h"
 
-Bullet::Bullet(Body *body, Renderer *renderer, Physics *physics, Tank* sender)
+Bullet::Bullet(Body *body, Renderer *renderer, Physics *physics, Tank* sender, int damage)
     : Entity(),
-      m_sender(sender)
+      m_sender(sender),
+      m_damage(damage)
 {
     m_body = body;
     m_renderer = renderer;
@@ -28,4 +29,9 @@ void Bullet::update()
 Tank *Bullet::sender() const
 {
     return m_sender;
+}
+
+int Bullet::damage() const
+{
+    return m_damage;
 }

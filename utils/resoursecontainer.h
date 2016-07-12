@@ -31,6 +31,10 @@ public:
 
     qreal bulletSpeed() const;
 
+    qreal bulletDamage() const;
+
+    qreal tankHealth() const;
+
 private:
     QImage m_tileSprites[2];
     QImage m_tankSprite;
@@ -38,6 +42,8 @@ private:
 
     qreal m_tankSize, m_tileSize, m_bulletSize;
     qreal m_tankSpeed, m_bulletSpeed;
+    qreal m_bulletDamage;
+    qreal m_tankHealth;
 
     ResBag();
 };

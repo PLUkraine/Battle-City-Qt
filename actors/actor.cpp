@@ -24,7 +24,7 @@ void Actor::correctToTiles(Board *board, Body *body)
 
 void Actor::correctToTanks(EntitiesBag *bag, Entity *entity)
 {
-    if (bag->collidesWith(entity->body()))
+    if (bag->collidesWithTank(entity->body()))
         entity->physics()->undo(entity->body());
 
 }

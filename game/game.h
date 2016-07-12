@@ -9,7 +9,6 @@
 
 #include"game/board.h"
 #include"actors/player.h"
-#include"entities/bullet.h"
 
 class Board;
 class Game : public QQuickPaintedItem

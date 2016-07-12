@@ -6,6 +6,7 @@
 #include "components/body.h"
 #include "components/renderer.h"
 #include "components/physics.h"
+#include "components/health.h"
 
 class Entity : public QObject
 {
@@ -22,6 +23,7 @@ public:
 
     virtual void update()=0; // ? maybe not
 
+    Health *health() const;
 
 protected:
     // connect body change signals to the renderer
@@ -35,6 +37,7 @@ protected:
     Renderer* m_renderer;
     Body* m_body;
     Physics *m_physics;
+    Health* m_health;
 };
 
 #endif // ENTITY_H

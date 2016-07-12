@@ -46,6 +46,16 @@ qreal ResBag::bulletSpeed() const
     return m_bulletSpeed;
 }
 
+qreal ResBag::bulletDamage() const
+{
+    return m_bulletDamage;
+}
+
+qreal ResBag::tankHealth() const
+{
+    return m_tankHealth;
+}
+
 ResBag::ResBag()
 {
     m_tileSprites[0] = QImage(":/sprites/air.png");
@@ -59,4 +69,6 @@ ResBag::ResBag()
     m_tankSize = 5;
     m_tileSize = 5;
     m_tankSpeed = 0.5;
+    m_bulletDamage = 5;
+    m_tankHealth = 5;
 }

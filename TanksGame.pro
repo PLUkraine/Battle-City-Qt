@@ -17,7 +17,9 @@ SOURCES += main.cpp \
     actors/player.cpp \
     entities/bullet.cpp \
     game/entitiesbag.cpp \
-    utils/resoursecontainer.cpp
+    utils/resoursecontainer.cpp \
+    factories/entitiesfactory.cpp \
+    components/health.cpp
 
 RESOURCES += qml.qrc
 
@@ -43,4 +45,6 @@ HEADERS += \
     actors/player.h \
     entities/bullet.h \
     game/entitiesbag.h \
-    utils/resoursecontainer.h
+    utils/resoursecontainer.h \
+    factories/entitiesfactory.h \
+    components/health.h

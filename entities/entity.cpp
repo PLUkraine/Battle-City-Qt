@@ -2,7 +2,9 @@
 
 Entity::Entity() : QObject(nullptr),
     m_renderer(nullptr),
-    m_body(nullptr)
+    m_body(nullptr),
+    m_physics(nullptr),
+    m_health(nullptr)
 {
 }
 
@@ -35,6 +37,11 @@ void Entity::dispose_of_renderer()
 {
     m_renderer->setParent(nullptr);
     delete m_renderer;
+}
+
+Health *Entity::health() const
+{
+    return m_health;
 }
 
 Physics *Entity::physics() const

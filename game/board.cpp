@@ -15,13 +15,14 @@ typedef std::pair<int,int> pii;
 typedef std::pair<pii, pii> range_p;
 
 
-Board::Board(qreal width, qreal height)
+Board::Board(qreal width, qreal height, TileBuilder *builder)
     :QObject(nullptr),
       m_tiles(nullptr),
       m_board_width(width),
       m_board_height(height),
       m_rows(0),
-      m_cols(0)
+      m_cols(0),
+      m_builder(builder)
 {
 }
 
@@ -30,9 +31,10 @@ Board::~Board()
     if (m_tiles) {
         delete[] m_tiles;
     }
+    delete m_builder;
 }
 
-void Board::loadBoard(QString filename, TileBuilder *builder)
+void Board::loadBoard(QString filename)
 {
     QFile inFile(filename);
     inFile.open(QIODevice::ReadOnly | QIODevice::Text);
@@ -50,15 +52,15 @@ void Board::loadBoard(QString filename, TileBuilder *builder)
     m_rows = rows;
 
     // map tiles to the real coordinates
-    builder->setRatio(m_board_width / (cols * builder->width()),
-                      m_board_height / (rows * builder->height()));
+    m_builder->setRatio(m_board_width / (cols * m_builder->width()),
+                      m_board_height / (rows * m_builder->height()));
 
     m_tiles = new Tile*[cols*rows];
     for (int i=0; i<cols*rows; ++i) {
-        int y = (i / cols) * builder->height();
-        int x = (i % cols) * builder->width();
-        m_tiles[i] = builder->createTile((TileBuilder::TileType)data[i].toInt(), x, y);
-        m_tiles[i]->setParent(this);
+        int y = (i / cols) * m_builder->height();
+        int x = (i % cols) * m_builder->width();
+        m_tiles[i] = m_builder->createTile((TileBuilder::TileType)data[i].toInt(), x, y);
+        connectTile(i);
     }
 
 }
@@ -73,11 +75,6 @@ void Board::resize(QSizeF newSize)
     for (int i=0; i<m_cols*m_rows; ++i) {
         m_tiles[i]->renderer()->setRatio(tileSize);
     }
-}
-
-bool Board::intersectsTiles(Body *)
-{
-    return true;
 }
 
 QSizeF Board::getTileRatio()
@@ -208,6 +205,43 @@ bool Board::inBoardBounds(Body *body)
 {
     QRectF r(topBound(), leftBound(), rightBound(), bottomBound());
     return r.contains(body->boundingRect().topLeft()) && r.contains(body->boundingRect().bottomRight());
+}
+
+QList<Tile *> Board::detectCollision(Body *body)
+{
+    QList<Tile*> tiles;
+
+    range_p r = mapBodyToTiles(body);
+    for (int i=max(0,r.second.first); i<=min(r.second.second, m_rows-1); i++) {
+        for (int j=max(0,r.first.first); j<=min(r.first.second, m_cols-1); ++j) {
+            int index = i*m_cols + j;
+            Tile* tile = m_tiles[index];
+            bool coll = body->collidesWith(tile->body());
+            coll &= tile->is_solid();
+            if ( coll ) {
+               tiles.append(tile);
+            }
+        }
+    }
+    return tiles;
+}
+
+void Board::destroyTile(Entity *e)
+{
+    range_p r = mapBodyToTiles(e->body());
+    int index = r.second.first*m_cols + r.first.first;
+    // TODO check if base
+    m_tiles[index] = m_builder->createTile(TileBuilder::AIR, e->body()->pos());
+    connectTile(index);
+
+    e->setParent(nullptr);
+    delete e;
+}
+
+void Board::connectTile(int index)
+{
+    m_tiles[index]->setParent(this);
+    // TODO connect died
 }
 
 range_p Board::mapBodyToTiles(Body *body)

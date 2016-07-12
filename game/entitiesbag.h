@@ -7,22 +7,31 @@
 #include "entities/tank.h"
 #include "actors/player.h"
 
-class EntitiesBag
+class EntitiesBag : public QObject
 {
+    Q_OBJECT
 public:
     EntitiesBag(Tank* playerTank);
-    ~EntitiesBag();
+    virtual ~EntitiesBag();
 
-    bool collidesWith(Body* body);
+    bool collidesWithTank(Body* body);
+    Tank* collisionWithTank(Body* body);
 
     void update(Actor* player, Board* board);
+
+signals:
+    void playerDied();
+    void enemyDied();
 
 public slots:
     void addBullet(Bullet*);
     void addTank(Tank*);
+private slots:
+    void deleteTank(Entity*);
+    void killPlayer();
 private:
-    void updateBullets();
-    void updateTanks();
+    void updateBullets(Board *board);
+    void updateTanks(Board *board);
 
     std::set<Bullet*> m_bullets;
     std::set<Tank*> m_tanks;

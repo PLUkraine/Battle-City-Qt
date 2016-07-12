@@ -11,10 +11,11 @@ Game::Game(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
     // create board
-    board = new Board(WINDOW_W, WINDOW_H);
-    TileBuilder builder(this, ResBag::get().tilesSptites());
-    builder.setSize(ResBag::get().tileSize());
-    board->loadBoard("level.json", &builder);
+    TileBuilder* builder = new TileBuilder(this, ResBag::get().tilesSptites());
+    builder->setSize(ResBag::get().tileSize());
+
+    board = new Board(WINDOW_W, WINDOW_H, builder);
+    board->loadBoard("level.json");
     QSizeF ratio = board->getTileRatio();
 
     // create player
@@ -23,7 +24,8 @@ Game::Game(QQuickItem *parent)
                 new Body(3*ResBag::get().tileSize(), 3*ResBag::get().tileSize(),
                          ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
                 new Renderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
-                new Physics(ResBag::get().tankSpeed())
+                new Physics(ResBag::get().tankSpeed()),
+                new Health(ResBag::get().tankHealth())
                 );
 
     // create entities bag
@@ -32,8 +34,17 @@ Game::Game(QQuickItem *parent)
                      new Body(3*ResBag::get().tileSize(), 5*ResBag::get().tileSize(),
                               ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
                      new Renderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
-                     new Physics(ResBag::get().tankSpeed())
+                     new Physics(ResBag::get().tankSpeed()),
+                     new Health(ResBag::get().tankHealth())
                      ));
+    bag->addBullet(new Bullet(
+                       new Body(6*ResBag::get().tileSize(), 4*ResBag::get().tileSize(),
+                                ResBag::get().bulletSize(), ResBag::get().bulletSize(), Direction::RIGHT),
+                       new Renderer(ResBag::get().bulletSprite(), ratio.width(), ratio.height(), this),
+                       new Physics(ResBag::get().bulletSpeed()),
+                       nullptr,
+                       ResBag::get().bulletDamage()
+                       ));
 
     // start game
     timer.setSingleShot(false);
@@ -83,16 +94,3 @@ void Game::updateGame()
 }
 
 
-//void Game::updateBullets()
-//{
-//    std::set<Bullet*> destroyedBullets;
-//    for (Bullet* b : bullets) {
-//        b->update();
-//        if (board->collidesWithBoard(b->body()) || !board->inBoardBounds(b->body()))
-//            destroyedBullets.insert(b);
-//    }
-//    for (Bullet* b: destroyedBullets){
-//        bullets.erase(b);
-//        delete b;
-//    }
-//}
