@@ -30,3 +30,8 @@ Body *Tile::body() const
 {
     return m_body;
 }
+
+bool Tile::is_solid() const
+{
+    return m_is_solid;
+}

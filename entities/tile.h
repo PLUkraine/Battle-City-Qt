@@ -14,6 +14,8 @@ public:
     virtual ~Tile();
 
     Body *body() const;
+    bool is_solid() const;
+
 private:
     Body* m_body;
     Renderer* m_renderer;

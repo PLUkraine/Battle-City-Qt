@@ -49,17 +49,6 @@ void Body::setSize(qreal width, qreal height)
     }
 }
 
-
-qreal Body::speed() const
-{
-    return m_speed;
-}
-
-void Body::setSpeed(const qreal &speed)
-{
-    m_speed = speed;
-}
-
 bool Body::collidesWith(Body *other)
 {
     return boundingRect().intersects(other->boundingRect());
@@ -70,11 +59,10 @@ QRectF Body::boundingRect() const
     return QRectF(m_x, m_y, m_width, m_height);
 }
 
-Body::Body(qreal x, qreal y, qreal width, qreal height, qreal speed)
+Body::Body(qreal x, qreal y, qreal width, qreal height)
     : QObject(nullptr),
       m_x(x), m_y(y),
       m_width(width),
-      m_height(height),
-      m_speed(speed)
+      m_height(height)
 {
 }

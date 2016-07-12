@@ -10,7 +10,7 @@ class Body : public QObject
 {
     Q_OBJECT
 public:
-    Body(qreal x, qreal y, qreal width, qreal height, qreal speed);
+    Body(qreal x, qreal y, qreal width, qreal height);
 
     qreal x() const;
     qreal y() const;
@@ -20,9 +20,6 @@ public:
     int width() const;
     int height() const;
     void setSize(qreal width, qreal height);
-
-    qreal speed() const;
-    void setSpeed(const qreal &speed);
 
     bool collidesWith(Body* other);
 
@@ -35,7 +32,7 @@ signals:
 private:
     qreal m_x, m_y;
     qreal m_width, m_height;
-    qreal m_speed;
+    int m_size_pts;
 };
 
 #endif
