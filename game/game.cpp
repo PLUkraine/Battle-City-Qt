@@ -21,7 +21,6 @@ Game::Game(QQuickItem *parent)
 
 
     b->loadBoard("level.json", &builder);
-
 //    Body *bod = new Body(0,0, 20, 20);
 //    qDebug() << b->intersectsTiles(bod);
 }

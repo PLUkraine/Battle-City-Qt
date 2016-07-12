@@ -3,25 +3,18 @@
 
 #include <QObject>
 
-#include "components/body.h"
-#include "components/renderer.h"
+#include "entities/entity.h"
 
-class Tile : public QObject
+class Tile : public Entity
 {
     Q_OBJECT
 public:
-    Tile(Body* body, Renderer* renderer, bool is_solid, QObject* parent=0);
+    Tile(Body* body, Renderer* renderer, bool is_solid);
     virtual ~Tile();
 
-    Body *body() const;
+    void update() {}
     bool is_solid() const;
-
-    Renderer *renderer() const;
-
 private:
-    Body* m_body;
-    Renderer* m_renderer;
-
     bool m_is_solid;
 };
 
