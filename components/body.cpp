@@ -1,18 +1,18 @@
 #include "body.h"
 #include<QRectF>
 
-qreal Body::x() const
+int Body::x() const
 {
     return m_x;
 }
 
 
-qreal Body::y() const
+int Body::y() const
 {
     return m_y;
 }
 
-void Body::setPosition(qreal x, qreal y)
+void Body::setPosition(int x, int y)
 {
     if (m_x != x || m_y != y) {
         m_x = x;
@@ -21,9 +21,9 @@ void Body::setPosition(qreal x, qreal y)
     }
 }
 
-QPointF Body::pos() const
+QPoint Body::pos() const
 {
-    return QPointF(m_x, m_y);
+    return QPoint(m_x, m_y);
 }
 
 
@@ -39,7 +39,7 @@ int Body::height() const
 }
 
 
-void Body::setSize(qreal width, qreal height)
+void Body::setSize(int width, int height)
 {
     if (width!=m_width || height != m_height)
     {
@@ -54,12 +54,12 @@ bool Body::collidesWith(Body *other)
     return boundingRect().intersects(other->boundingRect());
 }
 
-QRectF Body::boundingRect() const
+QRect Body::boundingRect() const
 {
-    return QRectF(m_x, m_y, m_width, m_height);
+    return QRect(m_x, m_y, m_width, m_height);
 }
 
-Body::Body(qreal x, qreal y, qreal width, qreal height)
+Body::Body(int x, int y, int width, int height)
     : QObject(nullptr),
       m_x(x), m_y(y),
       m_width(width),

@@ -11,7 +11,7 @@ public:
     Physics();
 
 private:
-    qreal m_speed;
+    int m_speed;
 
 };
 

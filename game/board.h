@@ -19,6 +19,7 @@ public:
     bool intersectsTiles(Body* body);
 private:
     Tile ** m_tiles;
+    // REAL board size
     qreal m_board_width;
     qreal m_board_height;
     int m_rows, m_cols;

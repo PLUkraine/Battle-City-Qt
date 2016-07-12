@@ -46,19 +46,17 @@ void Board::loadBoard(QString filename, TileBuilder *builder)
     m_cols = cols;
     m_rows = rows;
 
-    builder->setHeight(m_board_height / rows);
-    builder->setWidth(m_board_width / cols);
+    // map tiles to the real coordinates
+    builder->setRatio(m_board_width / (cols * builder->width()),
+                      m_board_height / (rows * builder->height()));
 
     m_tiles = new Tile*[cols*rows];
     for (int i=0; i<cols*rows; ++i) {
-        qreal y = (i / cols) * builder->height();
-        qreal x = (i % cols) * builder->width();
+        int y = (i / cols) * builder->height();
+        int x = (i % cols) * builder->width();
         m_tiles[i] = builder->createTile((TileBuilder::TileType)data[i].toInt(), x, y);
         m_tiles[i]->setParent(this);
     }
-
-    // TODO check if object is out of bounds, or do it separately
-
 
 }
 
@@ -67,38 +65,15 @@ void Board::resize(QSizeF newSize)
     m_board_height = newSize.height();
     m_board_width = newSize.width();
 
-    QSizeF tileSize(m_board_width / m_cols, m_board_height / m_rows);
+    QSizeF tileSize(m_board_width / (m_cols * m_tiles[0]->body()->width()),
+            m_board_height / (m_rows * m_tiles[0]->body()->height()) );
 
     for (int i=0; i<m_cols*m_rows; ++i) {
-        qreal y = (i / m_cols) * tileSize.height();
-        qreal x = (i % m_cols) * tileSize.width();
-        m_tiles[i]->body()->setPosition(x, y);
-        m_tiles[i]->body()->setSize(tileSize.width(), tileSize.height());
+        m_tiles[i]->renderer()->setRatio(tileSize);
     }
 }
 
-bool Board::intersectsTiles(Body *body)
+bool Board::intersectsTiles(Body *)
 {
-    qreal t_width = m_board_width / m_cols;
-    qreal t_height = m_board_height / m_rows;
-
-    int left_tile = body->boundingRect().left() / t_width;
-    int right_tile = body->boundingRect().right() / t_width;
-    int upper_tile = body->boundingRect().top() / t_height;
-    int lower_tile = body->boundingRect().bottom() / t_height;
-
-//    qDebug() << left_tile << right_tile;
-//    qDebug() << upper_tile << lower_tile;
-
-    bool intersects = false;
-    for (int i = max(left_tile, 0); i<= min(right_tile, m_rows - 1); ++i) {
-        for (int j = max(upper_tile, 0); j<= min(lower_tile, m_cols - 1); ++j) {
-            int index = i*m_cols + j;
-            //qDebug() << i << j << index << m_tiles[index]->body()->boundingRect() << body->boundingRect();
-            intersects |= m_tiles[index]->body()->collidesWith(body)
-                    && m_tiles[index]->is_solid();
-        }
-    }
-
-    return intersects;
+    return true;
 }
