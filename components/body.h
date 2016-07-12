@@ -3,6 +3,8 @@
 
 #include <QObject>
 
+enum class Direction { UP, RIGHT, DOWN, LEFT };
+
 /**
  * @brief The Body class - the physical body of some entity
  */
@@ -10,7 +12,7 @@ class Body : public QObject
 {
     Q_OBJECT
 public:
-    Body(qreal x, qreal y, int width, int height);
+    Body(qreal x, qreal y, qreal width, qreal height);
 
     qreal x() const;
     qreal y() const;

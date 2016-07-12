@@ -59,7 +59,7 @@ QRectF Body::boundingRect() const
     return QRectF(m_x, m_y, m_width, m_height);
 }
 
-Body::Body(qreal x, qreal y, int width, int height)
+Body::Body(qreal x, qreal y, qreal width, qreal height)
     : QObject(nullptr),
       m_x(x), m_y(y),
       m_width(width),

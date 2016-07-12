@@ -2,10 +2,13 @@
 #define BOARD_H
 
 #include <QObject>
-#include <QList>
+#include <utility>
 
 #include "entities/tile.h"
 #include "factories/tilebuilder.h"
+
+typedef std::pair<int,int> pii;
+typedef std::pair<pii, pii> range_p;
 
 class TileBuilder;
 class Board : public QObject
@@ -19,6 +22,17 @@ public:
     void resize(QSizeF newSize);
     bool intersectsTiles(Body* body);
     QSizeF getTileRatio();
+
+    qreal getLeftCoord(Body* body);
+    qreal getRighTCoord(Body* body);
+    qreal getUpperCoord(Body* body);
+    qreal getLowerCoord(Body* body);
+protected:
+    range_p mapBodyToTiles(Body* body);
+    qreal rightBound();
+    qreal bottomBound();
+    qreal leftBound();
+    qreal topBound();
 private:
     Tile ** m_tiles;
     // REAL board size

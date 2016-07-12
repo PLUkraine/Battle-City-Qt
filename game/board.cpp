@@ -83,3 +83,132 @@ QSizeF Board::getTileRatio()
             m_board_height / (m_rows * m_tiles[0]->body()->height()) );
     return tileSize;
 }
+
+qreal Board::getLeftCoord(Body *body)
+{
+    range_p r = mapBodyToTiles(body);
+    for (int i=max(0,r.second.first); i<=min(r.second.second, m_rows-1); i++) {
+        for (int j=max(0,r.first.first); j<=min(r.first.second, m_cols-1); ++j) {
+            int index = i*m_cols + j;
+            Tile* tile = m_tiles[index];
+
+            //qDebug() << tile->body()->boundingRect() << i << j;
+
+            bool coll = body->collidesWith(tile->body());
+            coll &= tile->is_solid();
+            if ( coll ) {
+                return tile->body()->boundingRect().left()-tile->body()->width();
+            }
+        }
+    }
+    if (body->x() > rightBound()-body->width()) {
+        return rightBound()-body->width();
+    } else if (body->x() < leftBound()) {
+        return leftBound();
+    }
+    return body->x();
+}
+
+qreal Board::getRighTCoord(Body *body)
+{
+    range_p r = mapBodyToTiles(body);
+    for (int i=min(r.second.second, m_rows-1); i>=max(0,r.second.first); i--) {
+        for (int j=max(0,r.first.first); j<=min(r.first.second, m_cols-1); ++j) {
+            int index = i*m_cols + j;
+            Tile* tile = m_tiles[index];
+
+            //qDebug() << tile->body()->boundingRect() << i << j;
+
+            bool coll = body->collidesWith(tile->body());
+            coll &= tile->is_solid();
+            if ( coll ) {
+                return tile->body()->boundingRect().right();
+            }
+        }
+    }
+    if (body->x() > rightBound()-body->width()) {
+        return rightBound()-body->width();
+    } else if (body->x() < leftBound()) {
+        return leftBound();
+    }
+    return body->x();
+}
+
+qreal Board::getUpperCoord(Body *body)
+{
+    range_p r = mapBodyToTiles(body);
+    for (int i=min(r.second.second, m_rows-1); i>=max(0,r.second.first); i--) {
+        for (int j=max(0,r.first.first); j<=min(r.first.second, m_cols-1); ++j) {
+            int index = i*m_cols + j;
+            Tile* tile = m_tiles[index];
+
+            //qDebug() << tile->body()->boundingRect() << i << j;
+
+            bool coll = body->collidesWith(tile->body());
+            coll &= tile->is_solid();
+            if ( coll ) {
+                return tile->body()->boundingRect().top() - tile->body()->height();
+            }
+        }
+    }
+    if (body->y() > bottomBound()-body->height()) {
+        return bottomBound()-body->height();
+    } else if (body->y() < topBound()) {
+        return topBound();
+    }
+    return body->y();
+}
+
+qreal Board::getLowerCoord(Body *body)
+{
+    range_p r = mapBodyToTiles(body);
+    for (int i=min(r.second.second, m_rows-1); i>=max(0,r.second.first); i--) {
+        for (int j=min(r.first.second, m_cols-1); j>=max(0,r.first.first); --j) {
+            int index = i*m_cols + j;
+            Tile* tile = m_tiles[index];
+
+            //qDebug() << tile->body()->boundingRect() << i << j;
+
+            bool coll = body->collidesWith(tile->body());
+            coll &= tile->is_solid();
+            if ( coll ) {
+                return tile->body()->boundingRect().bottom();
+            }
+        }
+    }
+    if (body->y() > bottomBound()-body->height()) {
+        return bottomBound()-body->height();
+    } else if (body->y() < topBound()) {
+        return topBound();
+    }
+    return body->y();
+}
+
+range_p Board::mapBodyToTiles(Body *body)
+{
+    qreal tile_w = m_tiles[0]->body()->width();
+    qreal tile_h = m_tiles[0]->body()->height();
+    pii left_to_right(body->boundingRect().left()/tile_w, body->boundingRect().right()/tile_w);
+    pii up_to_down(body->boundingRect().top()/tile_h, body->boundingRect().bottom()/tile_h);
+    return range_p(left_to_right, up_to_down);
+}
+
+qreal Board::rightBound()
+{
+    return m_cols * m_tiles[0]->body()->width();
+}
+
+qreal Board::bottomBound()
+{
+    return m_rows * m_tiles[0]->body()->height();
+}
+
+qreal Board::leftBound()
+{
+    return 0;
+}
+
+qreal Board::topBound()
+{
+    return 0;
+}

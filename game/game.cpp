@@ -2,13 +2,13 @@
 #include<QPainter>
 #include<QDebug>
 
-const int TILE_SIZE = 4;
-const int BULLET_SIZE = 1;
-const int TANK_SIZE = 4;
-const qreal TANK_SPEED = 0.3;
+const qreal TILE_SIZE = 3;
+const qreal BULLET_SIZE = 1;
+const qreal TANK_SIZE = 3;
+const qreal TANK_SPEED = 0.5;
 
-const qreal WINDOW_W = 400;
-const qreal WINDOW_H = 300;
+const qreal WINDOW_W = 800;
+const qreal WINDOW_H = 600;
 
 Game::Game(QQuickItem *parent)
     : QQuickPaintedItem(parent)
@@ -17,7 +17,7 @@ Game::Game(QQuickItem *parent)
     tileSprites[1] = QImage(":/sprites/wall.png");
     tankSprite = QImage(":/sprites/tank.png");
 
-    board = new Board(400,300);
+    board = new Board(WINDOW_W, WINDOW_H);
     TileBuilder builder(this, tileSprites);
     builder.setSize(TILE_SIZE);
     board->loadBoard("level.json", &builder);
@@ -26,11 +26,13 @@ Game::Game(QQuickItem *parent)
     player = new Player();
 
     playerTank = new Tank(
-                new Body(16,16,TANK_SIZE, TANK_SIZE),
+                new Body(2*TILE_SIZE, 2*TILE_SIZE ,TANK_SIZE, TANK_SIZE),
                 new Renderer(&tankSprite, ratio.width(), ratio.height(), this),
-                new Physics(TANK_SPEED)
+                new Physics(TANK_SPEED, Direction::DOWN)
                 );
 
+    qDebug() << playerTank->body()->boundingRect();
+    qDebug() << board->getLeftCoord(playerTank->body());
 
 
     timer.setSingleShot(false);
@@ -75,4 +77,6 @@ void Game::registerInQML()
 void Game::updateGame()
 {
     player->makeMove(board, playerTank);
+//    qreal x = board->getLeftCoord(playerTank->body());
+//    playerTank->body()->setPosition(x, playerTank->body()->y());
 }

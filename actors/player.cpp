@@ -2,6 +2,8 @@
 
 #include "player.h"
 
+#include "game/board.h"
+
 
 Player::Player(QObject *parent) : Actor(parent)
 {
@@ -20,21 +22,29 @@ void Player::setKey(Qt::Key key, bool value)
     m_control[m_bind[key]] = value;
 }
 
-void Player::makeMove(Board *, Tank* tank)
+void Player::makeMove(Board *board, Tank* tank)
 {
     for (int i=0; i<=3; ++i)
     {
-        qreal speed = tank->physics()->max_speed();
         if (m_control[i]) {
-            if (i == UP || i == DOWN) {
-                tank->physics()->setYSpeed(i==UP ? -speed : speed);
-                tank->physics()->setXSpeed(0);
-            } else {
-                tank->physics()->setXSpeed(i==LEFT ? -speed : speed);
-                tank->physics()->setYSpeed(0);
+            tank->physics()->setDirection(ControlToDirection((Control)i));
+            tank->update();
+
+            // update properly
+            qreal x=tank->body()->x();
+            qreal y=tank->body()->y();
+            if (i == LEFT) {
+                x = board->getRighTCoord(tank->body());
+            } else if (i == RIGHT) {
+                x = board->getLeftCoord(tank->body());
+            } else if (i == UP) {
+                y = board->getLowerCoord(tank->body());
+            } else if (i == DOWN){
+                y = board->getUpperCoord(tank->body());
             }
 
-            tank->update();
+            tank->body()->setPosition(x, y);
+
             break;
         }
     }

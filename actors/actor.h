@@ -15,6 +15,7 @@ public:
 
     Actor(QObject *parent = 0);
     virtual void makeMove(Board* board, Tank* tank)=0;
+    Direction ControlToDirection(Control c);
 };
 
 #endif // ACTOR_H

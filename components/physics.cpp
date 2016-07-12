@@ -1,16 +1,23 @@
 #include "physics.h"
 
-Physics::Physics(qreal max_speed)
+Physics::Physics(qreal max_speed, Direction direction)
     : QObject(nullptr),
-      m_x_speed(0),
-      m_y_speed(0),
-      m_max_speed(max_speed)
+      m_max_speed(max_speed),
+      m_direction(direction)
 {
 }
 
 void Physics::update(Body *body)
 {
-    body->setPosition(body->x() + m_x_speed, body->y() + m_y_speed);
+    qreal x = body->x();
+    qreal y = body->y();
+    switch (m_direction) {
+        case Direction::UP: y -= m_max_speed;  break;
+        case Direction::DOWN: y += m_max_speed; break;
+        case Direction::LEFT: x -= m_max_speed; break;
+        case Direction::RIGHT: x+=m_max_speed; break;
+    }
+    body->setPosition(x, y);
 }
 
 qreal Physics::max_speed() const
@@ -23,22 +30,12 @@ void Physics::setMax_speed(qreal max_speed)
     m_max_speed = max_speed;
 }
 
-qreal Physics::x_speed() const
+Direction Physics::direction() const
 {
-    return m_x_speed;
+    return m_direction;
 }
 
-void Physics::setXSpeed(qreal x_speed)
+void Physics::setDirection(const Direction &direction)
 {
-    m_x_speed = x_speed;
-}
-
-qreal Physics::y_speed() const
-{
-    return m_y_speed;
-}
-
-void Physics::setYSpeed(qreal y_speed)
-{
-    m_y_speed = y_speed;
+    m_direction = direction;
 }

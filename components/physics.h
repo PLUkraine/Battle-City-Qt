@@ -8,24 +8,18 @@ class Physics : public QObject
 {
     Q_OBJECT
 public:
-    Physics(qreal max_speed);
+    Physics(qreal max_speed, Direction direction);
 
     void update(Body* body);
 
     qreal max_speed() const;
     void setMax_speed(qreal max_speed);
 
-
-
-    qreal x_speed() const;
-    void setXSpeed(qreal x_speed);
-
-    qreal y_speed() const;
-    void setYSpeed(qreal y_speed);
+    Direction direction() const;
+    void setDirection(const Direction &direction);
 
 private:
-    qreal m_x_speed;
-    qreal m_y_speed;
+    Direction m_direction;
     qreal m_max_speed;
 };
 
