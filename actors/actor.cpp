@@ -1,5 +1,6 @@
 #include "actor.h"
 #include"game/board.h"
+#include"game/entitiesbag.h"
 
 Actor::Actor(QObject *parent) : QObject(parent)
 {
@@ -19,6 +20,13 @@ void Actor::correctToTiles(Board *board, Body *body)
     }
 
     body->setPosition(x, y);
+}
+
+void Actor::correctToTanks(EntitiesBag *bag, Entity *entity)
+{
+    if (bag->collidesWith(entity->body()))
+        entity->physics()->undo(entity->body());
+
 }
 
 Direction Actor::ControlToDirection(Actor::Control c)

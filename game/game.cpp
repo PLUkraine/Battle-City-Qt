@@ -1,11 +1,8 @@
 #include "game.h"
 #include<QPainter>
 #include<QDebug>
-
-const qreal TILE_SIZE = 4;
-const qreal BULLET_SIZE = 1;
-const qreal TANK_SIZE = 4;
-const qreal TANK_SPEED = 0.5;
+#include "utils/resoursecontainer.h"
+#include "game/entitiesbag.h"
 
 const qreal WINDOW_W = 400;
 const qreal WINDOW_H = 300;
@@ -13,36 +10,32 @@ const qreal WINDOW_H = 300;
 Game::Game(QQuickItem *parent)
     : QQuickPaintedItem(parent)
 {
-    tileSprites[0] = QImage(":/sprites/air.png");
-    tileSprites[1] = QImage(":/sprites/wall.png");
-    tankSprite = QImage(":/sprites/tank.png");
-    bulletSprite = QImage(":/sprites/bullet.png");
-
+    // create board
     board = new Board(WINDOW_W, WINDOW_H);
-    TileBuilder builder(this, tileSprites);
-    builder.setSize(TILE_SIZE);
+    TileBuilder builder(this, ResBag::get().tilesSptites());
+    builder.setSize(ResBag::get().tileSize());
     board->loadBoard("level.json", &builder);
     QSizeF ratio = board->getTileRatio();
 
+    // create player
     player = new Player();
-
-    playerTank = new Tank(
-                new Body(2*TILE_SIZE, 2*TILE_SIZE ,TANK_SIZE, TANK_SIZE, Direction::DOWN),
-                new Renderer(&tankSprite, ratio.width(), ratio.height(), this),
-                new Physics(TANK_SPEED)
+    Tank* playerTank = new Tank(
+                new Body(3*ResBag::get().tileSize(), 3*ResBag::get().tileSize(),
+                         ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
+                new Renderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
+                new Physics(ResBag::get().tankSpeed())
                 );
 
-    qDebug() << playerTank->body()->boundingRect();
-    qDebug() << board->getLeftCoord(playerTank->body());
+    // create entities bag
+    bag = new EntitiesBag(playerTank);
+    bag->addTank(new Tank(
+                     new Body(3*ResBag::get().tileSize(), 5*ResBag::get().tileSize(),
+                              ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
+                     new Renderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
+                     new Physics(ResBag::get().tankSpeed())
+                     ));
 
-    addBullet(new Bullet(
-                  new Body(TILE_SIZE*3, TILE_SIZE*4, BULLET_SIZE, BULLET_SIZE, Direction::UP),
-                  new Renderer(&bulletSprite, ratio.width(), ratio.height(), this),
-                  new Physics(TANK_SPEED),
-                  nullptr
-                  ));
-
-
+    // start game
     timer.setSingleShot(false);
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGame()));
     timer.start(1000/14);
@@ -52,6 +45,7 @@ Game::~Game()
 {
     delete board;
     delete player;
+    delete bag;
 }
 
 void Game::paint(QPainter *)
@@ -84,25 +78,21 @@ void Game::registerInQML()
 
 void Game::updateGame()
 {
-    player->makeMove(board, playerTank);
-    updateBullets();
+    //player->makeMove(board,  playerTank);
+    bag->update(player, board);
 }
 
-void Game::addBullet(Bullet *b)
-{
-    bullets.insert(b);
-}
 
-void Game::updateBullets()
-{
-    std::set<Bullet*> destroyedBullets;
-    for (Bullet* b : bullets) {
-        b->update();
-        if (board->collidesWithBoard(b->body()) || !board->inBoardBounds(b->body()))
-            destroyedBullets.insert(b);
-    }
-    for (Bullet* b: destroyedBullets){
-        bullets.erase(b);
-        delete b;
-    }
-}
+//void Game::updateBullets()
+//{
+//    std::set<Bullet*> destroyedBullets;
+//    for (Bullet* b : bullets) {
+//        b->update();
+//        if (board->collidesWithBoard(b->body()) || !board->inBoardBounds(b->body()))
+//            destroyedBullets.insert(b);
+//    }
+//    for (Bullet* b: destroyedBullets){
+//        bullets.erase(b);
+//        delete b;
+//    }
+//}

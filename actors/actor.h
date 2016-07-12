@@ -6,6 +6,7 @@
 #include "entities/tank.h"
 
 class Board;
+class EntitiesBag;
 class Actor : public QObject
 {
     Q_OBJECT
@@ -14,9 +15,10 @@ public:
     static const int CONTROLS_NUM = 4;
 
     Actor(QObject *parent = 0);
-    virtual void makeMove(Board* board, Tank* tank)=0;
+    virtual void makeMove(Board* board, EntitiesBag* bag, Tank* tank)=0;
 
     static void correctToTiles(Board* board, Body* body);
+    static void correctToTanks(EntitiesBag* bag, Entity *entity);
     Direction ControlToDirection(Control c);
 };
 

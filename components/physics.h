@@ -11,6 +11,7 @@ public:
     Physics(qreal max_speed);
 
     void update(Body* body);
+    void undo(Body* body);
 
     qreal max_speed() const;
     void setMax_speed(qreal max_speed);

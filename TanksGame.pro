@@ -15,7 +15,9 @@ SOURCES += main.cpp \
     entities/tank.cpp \
     actors/actor.cpp \
     actors/player.cpp \
-    entities/bullet.cpp
+    entities/bullet.cpp \
+    game/entitiesbag.cpp \
+    utils/resoursecontainer.cpp
 
 RESOURCES += qml.qrc
 
@@ -39,4 +41,6 @@ HEADERS += \
     entities/tank.h \
     actors/actor.h \
     actors/player.h \
-    entities/bullet.h
+    entities/bullet.h \
+    game/entitiesbag.h \
+    utils/resoursecontainer.h

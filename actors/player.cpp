@@ -22,7 +22,7 @@ void Player::setKey(Qt::Key key, bool value)
     m_control[m_bind[key]] = value;
 }
 
-void Player::makeMove(Board *board, Tank* tank)
+void Player::makeMove(Board *board, EntitiesBag *bag, Tank* tank)
 {
     for (int i=0; i<=3; ++i)
     {
@@ -30,20 +30,23 @@ void Player::makeMove(Board *board, Tank* tank)
             tank->body()->setDirection(ControlToDirection((Control)i));
             tank->update();
 
-            // update properly
-            qreal x=tank->body()->x();
-            qreal y=tank->body()->y();
-            if (i == LEFT) {
-                x = board->getRighTCoord(tank->body());
-            } else if (i == RIGHT) {
-                x = board->getLeftCoord(tank->body());
-            } else if (i == UP) {
-                y = board->getLowerCoord(tank->body());
-            } else if (i == DOWN){
-                y = board->getUpperCoord(tank->body());
-            }
+            correctToTanks(bag, tank);
+            correctToTiles(board, tank->body());
 
-            tank->body()->setPosition(x, y);
+            // update properly
+//            qreal x=tank->body()->x();
+//            qreal y=tank->body()->y();
+//            if (i == LEFT) {
+//                x = board->getRighTCoord(tank->body());
+//            } else if (i == RIGHT) {
+//                x = board->getLeftCoord(tank->body());
+//            } else if (i == UP) {
+//                y = board->getLowerCoord(tank->body());
+//            } else if (i == DOWN){
+//                y = board->getUpperCoord(tank->body());
+//            }
+
+//            tank->body()->setPosition(x, y);
 
             break;
         }

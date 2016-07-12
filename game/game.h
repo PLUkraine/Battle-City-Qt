@@ -28,23 +28,13 @@ public:
 
 public slots:
     void updateGame();
-    void addBullet(Bullet*);
-protected:
-    void updateBullets();
 private:
-    std::set<Bullet*> bullets;
-
-    QImage tileSprites[2];
-    QImage tankSprite;
-    QImage bulletSprite;
-
     QTimer timer;
 
     Board* board;
     Player* player;
-    Tank* playerTank;
 
-
+    EntitiesBag* bag;
 };
 
 #endif // GAME_H

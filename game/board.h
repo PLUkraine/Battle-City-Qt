@@ -7,9 +7,6 @@
 #include "entities/tile.h"
 #include "factories/tilebuilder.h"
 
-typedef std::pair<int,int> pii;
-typedef std::pair<pii, pii> range_p;
-
 class TileBuilder;
 class Board : public QObject
 {
@@ -31,7 +28,7 @@ public:
     bool collidesWithBoard(Body* body);
     bool inBoardBounds(Body* body);
 protected:
-    range_p mapBodyToTiles(Body* body);
+    std::pair<std::pair<int,int>, std::pair<int,int> > mapBodyToTiles(Body* body);
     qreal rightBound();
     qreal bottomBound();
     qreal leftBound();

@@ -11,6 +11,9 @@
 using std::min;
 using std::max;
 
+typedef std::pair<int,int> pii;
+typedef std::pair<pii, pii> range_p;
+
 
 Board::Board(qreal width, qreal height)
     :QObject(nullptr),
@@ -97,7 +100,7 @@ qreal Board::getLeftCoord(Body *body)
             bool coll = body->collidesWith(tile->body());
             coll &= tile->is_solid();
             if ( coll ) {
-                return tile->body()->boundingRect().left()-tile->body()->width();
+                return tile->body()->boundingRect().left() - body->width();
             }
         }
     }
@@ -147,7 +150,7 @@ qreal Board::getUpperCoord(Body *body)
             bool coll = body->collidesWith(tile->body());
             coll &= tile->is_solid();
             if ( coll ) {
-                return tile->body()->boundingRect().top() - tile->body()->height();
+                return tile->body()->boundingRect().top() - body->height();
             }
         }
     }
