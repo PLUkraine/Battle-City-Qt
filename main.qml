@@ -11,6 +11,7 @@ Window {
     Game {
         anchors.fill: parent
 
+        focus: true
         visible: true
     }
 

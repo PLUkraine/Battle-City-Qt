@@ -3,6 +3,7 @@
 #include "entities/tile.h"
 #include "game/game.h"
 
+class Game;
 class TileBuilder
 {
 public:

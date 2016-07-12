@@ -65,8 +65,7 @@ void Board::resize(QSizeF newSize)
     m_board_height = newSize.height();
     m_board_width = newSize.width();
 
-    QSizeF tileSize(m_board_width / (m_cols * m_tiles[0]->body()->width()),
-            m_board_height / (m_rows * m_tiles[0]->body()->height()) );
+    QSizeF tileSize = getTileRatio();
 
     for (int i=0; i<m_cols*m_rows; ++i) {
         m_tiles[i]->renderer()->setRatio(tileSize);
@@ -76,4 +75,11 @@ void Board::resize(QSizeF newSize)
 bool Board::intersectsTiles(Body *)
 {
     return true;
+}
+
+QSizeF Board::getTileRatio()
+{
+    QSizeF tileSize(m_board_width / (m_cols * m_tiles[0]->body()->width()),
+            m_board_height / (m_rows * m_tiles[0]->body()->height()) );
+    return tileSize;
 }

@@ -5,6 +5,7 @@
 
 #include "components/body.h"
 #include "components/renderer.h"
+#include "components/physics.h"
 
 class Entity : public QObject
 {
@@ -17,10 +18,13 @@ public:
 
     Body *body() const;
 
+    Physics *physics() const;
+
     virtual void update()=0; // ? maybe not
 
+
 protected:
-    // connect body change to the renderer
+    // connect body change signals to the renderer
     void wire_renderer_to_body();
     // disconnect body from the renderer
     void unwire_renderer_from_body();
@@ -30,6 +34,7 @@ protected:
 
     Renderer* m_renderer;
     Body* m_body;
+    Physics *m_physics;
 };
 
 #endif // ENTITY_H

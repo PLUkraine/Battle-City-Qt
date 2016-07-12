@@ -11,7 +11,10 @@ SOURCES += main.cpp \
     game/board.cpp \
     factories/tilebuilder.cpp \
     components/physics.cpp \
-    entities/entity.cpp
+    entities/entity.cpp \
+    entities/tank.cpp \
+    actors/actor.cpp \
+    actors/player.cpp
 
 RESOURCES += qml.qrc
 
@@ -31,4 +34,7 @@ HEADERS += \
     game/board.h \
     factories/tilebuilder.h \
     components/physics.h \
-    entities/entity.h
+    entities/entity.h \
+    entities/tank.h \
+    actors/actor.h \
+    actors/player.h

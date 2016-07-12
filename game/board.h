@@ -7,6 +7,7 @@
 #include "entities/tile.h"
 #include "factories/tilebuilder.h"
 
+class TileBuilder;
 class Board : public QObject
 {
     Q_OBJECT
@@ -17,6 +18,7 @@ public:
     void loadBoard(QString filename, TileBuilder* builder);
     void resize(QSizeF newSize);
     bool intersectsTiles(Body* body);
+    QSizeF getTileRatio();
 private:
     Tile ** m_tiles;
     // REAL board size

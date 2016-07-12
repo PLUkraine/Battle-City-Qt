@@ -6,5 +6,6 @@
     <qresource prefix="/sprites">
         <file>wall.png</file>
         <file>air.png</file>
+        <file>tank.png</file>
     </qresource>
 </RCC>
