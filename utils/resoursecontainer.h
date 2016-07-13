@@ -2,6 +2,7 @@
 #define RESOURSECONTAINER_H
 
 #include <QImage>
+#include <QString>
 
 /**
  * @brief The ResourseContainer class - singleton for storing images and constants needed for
@@ -53,6 +54,8 @@ private:
     qreal m_weaponCooldown;
 
     ResBag();
+    void readConfigs();
+    void handleError(QString message);
 };
 
 #endif // RESOURSECONTAINER_H

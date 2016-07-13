@@ -1,5 +1,12 @@
 #include "resoursecontainer.h"
 
+#include <QJsonArray>
+#include <QJsonObject>
+#include <QJsonDocument>
+#include <QFile>
+#include <QDebug>
+#include <iostream>
+
 ResBag &ResBag::get()
 {
     static ResBag container;
@@ -73,17 +80,51 @@ ResBag::ResBag()
     m_tankSprite = QImage(":/sprites/tank_sprites.png");
     m_bulletSprite = QImage(":/sprites/bullet.png");
 
-    // TODO read from the config file
-    m_bulletSize = 1;
-    m_bulletSpeed = 0.5;
-    m_tankSize = 5;
-    m_tileSize = 5;
-    m_tankSpeed = 0.2;
-    m_bulletDamage = 5;
-    m_tankHealth = 5;
+    readConfigs();
+}
 
-    m_tileHealth[0] = 0;
-    m_tileHealth[1] = 5;
+void ResBag::readConfigs()
+{
+    QFile file(":/config/gameconfig.json");
+    if (!file.exists())
+        handleError("File doesn't exist!");
+    file.open(QIODevice::ReadOnly | QIODevice::Text);
+    QByteArray val = file.readAll();
+    file.close();
 
-    m_weaponCooldown = 13;
+    QJsonParseError er;
+    QJsonObject root = QJsonDocument::fromJson(val, &er).object();
+    if (er.error != QJsonParseError::NoError)
+        handleError("Error while reading config: " + er.errorString());
+
+    // read tank info
+    QJsonObject tank = root["tank"].toObject();
+    m_tankSize = tank["size"].toDouble();
+    m_tankHealth = tank["health"].toInt();
+    m_tankSpeed = tank["speed"].toDouble();
+
+    // read tile info
+    QJsonObject tile = root["tile"].toObject();
+    m_tileSize = tile["size"].toDouble();
+    QJsonArray data = tile["health"].toArray();
+    for (int i=0; i<data.count(); ++i) {
+        m_tileHealth[i] = data[i].toInt();
+    }
+
+    // read bullet info
+    QJsonObject bullet = root["bullet"].toObject();
+    m_bulletSize = bullet["size"].toDouble();
+    m_bulletSpeed = bullet["speed"].toDouble();
+    m_bulletDamage = bullet["damage"].toInt();
+
+    // read weapon info
+    QJsonObject stdWeapon = root["standardWeapon"].toObject();
+    m_weaponCooldown = stdWeapon["cooldown"].toInt();
+
+}
+
+void ResBag::handleError(QString message)
+{
+    std::cerr << message.toStdString();
+    exit(1);
 }

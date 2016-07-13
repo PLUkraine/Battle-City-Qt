@@ -10,4 +10,7 @@
         <file>bullet.png</file>
         <file>tank_sprites.png</file>
     </qresource>
+    <qresource prefix="/config">
+        <file>gameconfig.json</file>
+    </qresource>
 </RCC>

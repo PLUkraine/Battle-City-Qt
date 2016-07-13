@@ -1,20 +1,23 @@
 {
-	"tank": {
-		"size": 5,
-		"health": 5,
-		"speed": 0.4
-	},
-	"tile": {
-		"size": 4,
-		"solid": [ false, true ],
-		"health": [ 0, 5 ]
-	},
-	"bullet": {
-		"size": 1,
-		"speed": 0.5,
-		"damage": 5
-	},
-	"standartWeapon": {
-		"cooldown": 15
-	}
+    "game": {
+        "timerInterval": 33
+    },
+    "tank": {
+        "size": 5,
+        "health": 5,
+        "speed": 0.4
+    },
+    "tile": {
+        "size": 5,
+        "solid": [ false, true ],
+        "health": [ 0, 5 ]
+    },
+    "bullet": {
+        "size": 1,
+        "speed": 0.5,
+        "damage": 5
+    },
+    "standardWeapon": {
+        "cooldown": 15
+    }
 }
