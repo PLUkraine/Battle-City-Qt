@@ -2,10 +2,12 @@
 #define ENTITIESBAG_H
 
 #include <set>
+#include <map>
 
 #include "entities/bullet.h"
 #include "entities/tank.h"
 #include "actors/player.h"
+#include "actors/dummyai.h"
 
 class EntitiesBag : public QObject
 {
@@ -37,6 +39,7 @@ private:
 
     std::set<Bullet*> m_bullets;
     std::set<Tank*> m_tanks;
+    std::map<Tank*, DummyAI*> m_ai;
     Tank* m_playerTank;
 };
 

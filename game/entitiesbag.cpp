@@ -52,6 +52,7 @@ void EntitiesBag::addTank(Tank *t)
 {
     m_tanks.insert(t);
     connect(t->health(), SIGNAL(died(Entity*)), this, SLOT(deleteTank(Entity*)));
+    m_ai[t] = new DummyAI();
 }
 
 void EntitiesBag::deleteTank(Entity *tank)
@@ -59,6 +60,8 @@ void EntitiesBag::deleteTank(Entity *tank)
     Tank* t = (Tank*)tank;
     disconnect(t->health(), SIGNAL(died(Entity*)), this, SLOT(deleteTank(Entity*)));
     m_tanks.erase(t);
+    delete m_ai[t];
+    m_ai.erase(t);
     delete t;
     emit enemyDied();
 }
@@ -101,7 +104,9 @@ void EntitiesBag::updateBullets(Board *board)
     }
 }
 
-void EntitiesBag::updateTanks(Board *)
+void EntitiesBag::updateTanks(Board *b)
 {
-
+    for (Tank *t: m_tanks) {
+        m_ai[t]->makeMove(b, this, t);
+    }
 }

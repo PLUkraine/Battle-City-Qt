@@ -18,7 +18,6 @@ public:
     void makeMove(Board* board, EntitiesBag* bag, Tank* tank);
 private:
     map<Qt::Key, Control> m_bind;
-    bool m_control[CONTROLS_NUM];
 };
 
 #endif // PLAYER_H

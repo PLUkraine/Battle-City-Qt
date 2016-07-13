@@ -29,7 +29,7 @@ int Weapon::ammo() const
 
 bool Weapon::canShoot() const
 {
-    return m_cooldown == m_frames_passed;
+    return m_cooldown == m_frames_passed && m_ammo != 0;
 }
 
 void Weapon::update()
@@ -58,8 +58,10 @@ Bullet *StandartWeapon::shoot()
                                   ratio.width(), ratio.height(),
                                   m_game);
 
-    Body* body = new Body(r.center().x(),
-                          r.center().y(),
+    qreal bullet_w = ResBag::get().bulletSize();
+    qreal bullet_h = ResBag::get().bulletSize();
+    Body* body = new Body(r.center().x() - bullet_w/2,
+                          r.center().y() - bullet_h/2,
                           ResBag::get().bulletSize(),
                           ResBag::get().bulletSize(),
                           owner()->body()->direction());

@@ -40,6 +40,8 @@ public:
 
     qreal weaponCooldown() const;
 
+    bool *tileSolidness();
+
 private:
     QImage m_tileSprites[2];
     QImage m_tankSprite;
@@ -50,6 +52,7 @@ private:
     qreal m_bulletDamage;
     qreal m_tankHealth;
     qreal m_tileHealth[2];
+    bool m_tileSolidness[2];
 
     qreal m_weaponCooldown;
 

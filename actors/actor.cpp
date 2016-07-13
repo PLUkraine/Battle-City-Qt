@@ -4,7 +4,7 @@
 
 Actor::Actor(QObject *parent) : QObject(parent)
 {
-
+    memset(m_control, 0, sizeof(m_control));
 }
 
 void Actor::correctToTiles(Board *board, Body *body)
@@ -49,4 +49,31 @@ Direction Actor::ControlToDirection(Actor::Control c)
         break;
     }
 
+}
+
+void Actor::shoot(Weapon *w, EntitiesBag* bag)
+{
+    if (m_control[SHOOT] && w->canShoot()) {
+        bag->addBullet(w->shoot());
+    }
+}
+
+void Actor::move(Entity *tank, Board *board, EntitiesBag *bag)
+{
+    int i=0;
+    for (i=0; i<=3; ++i)
+    {
+        if (m_control[i]) {
+            tank->body()->setDirection(ControlToDirection((Control)i));
+            tank->physics()->setSpeed(tank->physics()->max_speed());
+            break;
+        }
+    }
+    if (i == 4) {
+        tank->physics()->setSpeed(0);
+    }
+
+    tank->update();
+    correctToTanks(bag, tank);
+    correctToTiles(board, tank->body());
 }

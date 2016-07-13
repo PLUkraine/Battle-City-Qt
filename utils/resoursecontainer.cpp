@@ -73,6 +73,11 @@ qreal ResBag::weaponCooldown() const
     return m_weaponCooldown;
 }
 
+bool *ResBag::tileSolidness()
+{
+    return m_tileSolidness;
+}
+
 ResBag::ResBag()
 {
     m_tileSprites[0] = QImage(":/sprites/air.png");
@@ -109,6 +114,10 @@ void ResBag::readConfigs()
     QJsonArray data = tile["health"].toArray();
     for (int i=0; i<data.count(); ++i) {
         m_tileHealth[i] = data[i].toInt();
+    }
+    data = tile["solid"].toArray();
+    for (int i=0; i<data.count(); ++i) {
+        m_tileSolidness[i] = data[i].toBool();
     }
 
     // read bullet info

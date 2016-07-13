@@ -21,7 +21,8 @@ SOURCES += main.cpp \
     factories/entitiesfactory.cpp \
     components/health.cpp \
     components/weapon.cpp \
-    components/component.cpp
+    components/component.cpp \
+    actors/dummyai.cpp
 
 RESOURCES += qml.qrc
 
@@ -51,4 +52,5 @@ HEADERS += \
     factories/entitiesfactory.h \
     components/health.h \
     components/weapon.h \
-    components/component.h
+    components/component.h \
+    actors/dummyai.h

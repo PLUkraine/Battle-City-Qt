@@ -5,7 +5,7 @@
     "tank": {
         "size": 5,
         "health": 5,
-        "speed": 0.4
+        "speed": 0.5
     },
     "tile": {
         "size": 5,
@@ -14,7 +14,7 @@
     },
     "bullet": {
         "size": 1,
-        "speed": 0.5,
+        "speed": 0.75,
         "damage": 5
     },
     "standardWeapon": {

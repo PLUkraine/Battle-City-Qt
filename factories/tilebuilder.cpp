@@ -4,10 +4,6 @@
 #include "tilebuilder.h"
 #include "factories/entitiesfactory.h"
 
-static const bool IS_SOLID[] = {
-    false, true
-};
-
 TileBuilder::TileBuilder(Game *game)
     : m_game(game),
       m_width(0),
@@ -31,7 +27,7 @@ Tile *TileBuilder::createTile(TileBuilder::TileType type, qreal x, qreal y)
     rend->setZ(-1);
     Health* health = new Health(ResBag::get().tileHealth()[type]);
 
-    Tile * tile = new Tile(body, rend, health, IS_SOLID[type]);
+    Tile * tile = new Tile(body, rend, health, ResBag::get().tileSolidness()[type]);
     return tile;
 }
 

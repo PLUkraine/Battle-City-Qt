@@ -26,27 +26,6 @@ void Player::setKey(Qt::Key key, bool value)
 
 void Player::makeMove(Board *board, EntitiesBag *bag, Tank* tank)
 {
-    int i=0;
-    for (i=0; i<=3; ++i)
-    {
-        if (m_control[i]) {
-            tank->body()->setDirection(ControlToDirection((Control)i));
-            tank->physics()->setSpeed(tank->physics()->max_speed());
-            tank->update();
-
-            correctToTanks(bag, tank);
-            correctToTiles(board, tank->body());
-
-            break;
-        }
-    }
-    if (i == 4) {
-        tank->physics()->setSpeed(0);
-        tank->update();
-    }
-
-    if (m_control[SHOOT] && tank->weapon()->canShoot()) {
-        bag->addBullet(tank->weapon()->shoot());
-    }
-
+    move(tank, board, bag);
+    shoot(tank->weapon(), bag);
 }
