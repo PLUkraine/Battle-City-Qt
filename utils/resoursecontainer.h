@@ -37,6 +37,8 @@ public:
 
     qreal* tileHealth();
 
+    qreal weaponCooldown() const;
+
 private:
     QImage m_tileSprites[2];
     QImage m_tankSprite;
@@ -47,6 +49,8 @@ private:
     qreal m_bulletDamage;
     qreal m_tankHealth;
     qreal m_tileHealth[2];
+
+    qreal m_weaponCooldown;
 
     ResBag();
 };

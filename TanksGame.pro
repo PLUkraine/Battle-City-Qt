@@ -19,7 +19,9 @@ SOURCES += main.cpp \
     game/entitiesbag.cpp \
     utils/resoursecontainer.cpp \
     factories/entitiesfactory.cpp \
-    components/health.cpp
+    components/health.cpp \
+    components/weapon.cpp \
+    components/component.cpp
 
 RESOURCES += qml.qrc
 
@@ -47,4 +49,6 @@ HEADERS += \
     game/entitiesbag.h \
     utils/resoursecontainer.h \
     factories/entitiesfactory.h \
-    components/health.h
+    components/health.h \
+    components/weapon.h \
+    components/component.h

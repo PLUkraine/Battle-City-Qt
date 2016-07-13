@@ -1,6 +1,6 @@
 #include "bullet.h"
 
-Bullet::Bullet(Body *body, Renderer *renderer, Physics *physics, Tank* sender, int damage)
+Bullet::Bullet(Body *body, Renderer *renderer, Physics *physics, Entity *sender, int damage)
     : Entity(),
       m_sender(sender),
       m_damage(damage)
@@ -11,6 +11,7 @@ Bullet::Bullet(Body *body, Renderer *renderer, Physics *physics, Tank* sender, i
 
     m_body->setParent(this);
     m_physics->setParent(this);
+    m_physics->setSpeed(m_physics->max_speed());
 
     wire_renderer_to_body();
 }
@@ -26,7 +27,7 @@ void Bullet::update()
     physics()->update(body());
 }
 
-Tank *Bullet::sender() const
+Entity *Bullet::sender() const
 {
     return m_sender;
 }

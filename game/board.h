@@ -18,7 +18,7 @@ public:
 
     void loadBoard(QString filename);
     void resize(QSizeF newSize);
-    QSizeF getTileRatio();
+    QSizeF getTileRatio() const ;
 
 
     qreal getLeftCoord(Body* body);

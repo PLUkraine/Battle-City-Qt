@@ -8,17 +8,17 @@ class Bullet : public Entity
 {
     Q_OBJECT
 public:
-    Bullet(Body*body, Renderer*renderer, Physics* physics, Tank* sender, int damage);
+    Bullet(Body*body, Renderer*renderer, Physics* physics, Entity* sender, int damage);
     virtual ~Bullet();
 
     void update();
 
-    Tank* sender() const;
+    Entity *sender() const;
 
     int damage() const;
 
 protected:
-    Tank* m_sender;
+    Entity* m_sender;
     int m_damage;
 };
 

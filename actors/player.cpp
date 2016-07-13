@@ -3,6 +3,7 @@
 #include "player.h"
 
 #include "game/board.h"
+#include"game/entitiesbag.h"
 
 
 Player::Player(QObject *parent) : Actor(parent)
@@ -13,6 +14,7 @@ Player::Player(QObject *parent) : Actor(parent)
     m_bind[Qt::Key_Right] = RIGHT;
     m_bind[Qt::Key_Down] = DOWN;
     m_bind[Qt::Key_Left] = LEFT;
+    m_bind[Qt::Key_Space] = SHOOT;
 }
 
 void Player::setKey(Qt::Key key, bool value)
@@ -24,32 +26,27 @@ void Player::setKey(Qt::Key key, bool value)
 
 void Player::makeMove(Board *board, EntitiesBag *bag, Tank* tank)
 {
-    for (int i=0; i<=3; ++i)
+    int i=0;
+    for (i=0; i<=3; ++i)
     {
         if (m_control[i]) {
             tank->body()->setDirection(ControlToDirection((Control)i));
+            tank->physics()->setSpeed(tank->physics()->max_speed());
             tank->update();
 
             correctToTanks(bag, tank);
             correctToTiles(board, tank->body());
 
-            // update properly
-//            qreal x=tank->body()->x();
-//            qreal y=tank->body()->y();
-//            if (i == LEFT) {
-//                x = board->getRighTCoord(tank->body());
-//            } else if (i == RIGHT) {
-//                x = board->getLeftCoord(tank->body());
-//            } else if (i == UP) {
-//                y = board->getLowerCoord(tank->body());
-//            } else if (i == DOWN){
-//                y = board->getUpperCoord(tank->body());
-//            }
-
-//            tank->body()->setPosition(x, y);
-
             break;
         }
+    }
+    if (i == 4) {
+        tank->physics()->setSpeed(0);
+        tank->update();
+    }
+
+    if (m_control[SHOOT] && tank->weapon()->canShoot()) {
+        bag->addBullet(tank->weapon()->shoot());
     }
 
 }

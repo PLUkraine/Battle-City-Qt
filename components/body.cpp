@@ -66,11 +66,14 @@ Direction Body::direction() const
 
 void Body::setDirection(const Direction &direction)
 {
-    m_direction = direction;
+    if (m_direction != direction) {
+        m_direction = direction;
+        emit directionChanged(direction);
+    }
 }
 
 Body::Body(qreal x, qreal y, qreal width, qreal height, Direction direction)
-    : QObject(nullptr),
+    : Component(),
       m_x(x), m_y(y),
       m_width(width),
       m_height(height),

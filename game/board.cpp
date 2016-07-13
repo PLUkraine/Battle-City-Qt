@@ -77,7 +77,7 @@ void Board::resize(QSizeF newSize)
     }
 }
 
-QSizeF Board::getTileRatio()
+QSizeF Board::getTileRatio() const
 {
     QSizeF tileSize(m_board_width / (m_cols * m_tiles[0]->body()->width()),
             m_board_height / (m_rows * m_tiles[0]->body()->height()) );
@@ -234,6 +234,7 @@ void Board::destroyTile(Entity *e)
     m_tiles[index] = m_builder->createTile(TileBuilder::AIR, e->body()->pos());
     connectTile(index);
 
+    disconnect(e->health(), SIGNAL(died(Entity*)), this, SLOT(destroyTile(Entity*)));
     e->setParent(nullptr);
     delete e;
 }
@@ -241,7 +242,7 @@ void Board::destroyTile(Entity *e)
 void Board::connectTile(int index)
 {
     m_tiles[index]->setParent(this);
-    // TODO connect died
+    connect(m_tiles[index]->health(), SIGNAL(died(Entity*)), this, SLOT(destroyTile(Entity*)));
 }
 
 range_p Board::mapBodyToTiles(Body *body)

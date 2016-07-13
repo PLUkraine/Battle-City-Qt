@@ -1,19 +1,7 @@
 #include "health.h"
 
-
-Entity *Health::owner() const
-{
-    return m_owner;
-}
-
-void Health::setOwner(Entity *owner)
-{
-    m_owner = owner;
-}
-
 Health::Health(int points)
-    : QObject(nullptr),
-      m_owner(nullptr),
+    : Component(),
       m_health(points)
 {
 }

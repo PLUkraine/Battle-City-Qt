@@ -8,5 +8,6 @@
         <file>air.png</file>
         <file>tank.png</file>
         <file>bullet.png</file>
+        <file>tank_sprites.png</file>
     </qresource>
 </RCC>

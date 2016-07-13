@@ -61,22 +61,29 @@ qreal *ResBag::tileHealth()
     return m_tileHealth;
 }
 
+qreal ResBag::weaponCooldown() const
+{
+    return m_weaponCooldown;
+}
+
 ResBag::ResBag()
 {
     m_tileSprites[0] = QImage(":/sprites/air.png");
     m_tileSprites[1] = QImage(":/sprites/wall.png");
-    m_tankSprite = QImage(":/sprites/tank.png");
+    m_tankSprite = QImage(":/sprites/tank_sprites.png");
     m_bulletSprite = QImage(":/sprites/bullet.png");
 
     // TODO read from the config file
     m_bulletSize = 1;
-    m_bulletSpeed = 0.75;
+    m_bulletSpeed = 0.5;
     m_tankSize = 5;
     m_tileSize = 5;
-    m_tankSpeed = 0.5;
+    m_tankSpeed = 0.2;
     m_bulletDamage = 5;
     m_tankHealth = 5;
 
     m_tileHealth[0] = 0;
     m_tileHealth[1] = 5;
+
+    m_weaponCooldown = 13;
 }

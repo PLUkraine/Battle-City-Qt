@@ -11,7 +11,7 @@ class Actor : public QObject
 {
     Q_OBJECT
 public:
-    enum Control { UP, DOWN, LEFT, RIGHT };
+    enum Control { UP, DOWN, LEFT, RIGHT, SHOOT };
     static const int CONTROLS_NUM = 4;
 
     Actor(QObject *parent = 0);

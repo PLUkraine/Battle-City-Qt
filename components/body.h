@@ -1,14 +1,14 @@
 #ifndef BODY_H
 #define BODY_H
 
-#include <QObject>
+#include "component.h"
 
-enum class Direction { UP, RIGHT, DOWN, LEFT };
+enum class Direction { UP, DOWN, LEFT, RIGHT };
 
 /**
  * @brief The Body class - the physical body of some entity
  */
-class Body : public QObject
+class Body : public Component
 {
     Q_OBJECT
 public:
@@ -33,6 +33,7 @@ public:
 signals:
     void positionChanged(qreal, qreal);
     void sizeChanged(qreal, qreal);
+    void directionChanged(Direction);
 
 private:
     qreal m_x, m_y;

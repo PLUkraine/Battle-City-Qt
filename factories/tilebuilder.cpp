@@ -27,7 +27,8 @@ Tile *TileBuilder::createTile(TileBuilder::TileType type, qreal x, qreal y)
 {
 
     Body* body = new Body(x, y, m_width, m_height, Direction::UP);
-    Renderer* rend = new Renderer(&ResBag::get().tilesSptites()[type], m_x_ratio, m_y_ratio, m_game);
+    Renderer* rend = new StaticRenderer(&ResBag::get().tilesSptites()[type], m_x_ratio, m_y_ratio, m_game);
+    rend->setZ(-1);
     Health* health = new Health(ResBag::get().tileHealth()[type]);
 
     Tile * tile = new Tile(body, rend, health, IS_SOLID[type]);

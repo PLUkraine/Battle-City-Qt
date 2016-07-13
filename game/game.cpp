@@ -22,9 +22,10 @@ Game::Game(QQuickItem *parent)
     Tank* playerTank = new Tank(
                 new Body(3*ResBag::get().tileSize(), 3*ResBag::get().tileSize(),
                          ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
-                new Renderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
+                new DirectionRenderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
                 new Physics(ResBag::get().tankSpeed()),
-                new Health(ResBag::get().tankHealth())
+                new Health(ResBag::get().tankHealth()),
+                new StandartWeapon(this)
                 );
 
     // create entities bag
@@ -32,23 +33,25 @@ Game::Game(QQuickItem *parent)
     bag->addTank(new Tank(
                      new Body(3*ResBag::get().tileSize(), 5*ResBag::get().tileSize(),
                               ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
-                     new Renderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
+                     new DirectionRenderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
                      new Physics(ResBag::get().tankSpeed()),
-                     new Health(ResBag::get().tankHealth())
+                     new Health(ResBag::get().tankHealth()),
+                     new StandartWeapon(this)
                      ));
     bag->addBullet(new Bullet(
-                       new Body(6*ResBag::get().tileSize(), 4*ResBag::get().tileSize(),
+                       new Body(3*ResBag::get().tileSize(), 4*ResBag::get().tileSize(),
                                 ResBag::get().bulletSize(), ResBag::get().bulletSize(), Direction::RIGHT),
-                       new Renderer(ResBag::get().bulletSprite(), ratio.width(), ratio.height(), this),
+                       new StaticRenderer(ResBag::get().bulletSprite(), ratio.width(), ratio.height(), this),
                        new Physics(ResBag::get().bulletSpeed()),
                        nullptr,
                        ResBag::get().bulletDamage()
                        ));
 
+
     // start game
     timer.setSingleShot(false);
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGame()));
-    timer.start(1000/14);
+    timer.start(1000/30);
 }
 
 Game::~Game()
@@ -60,7 +63,11 @@ Game::~Game()
 
 void Game::paint(QPainter *)
 {
+}
 
+QSizeF Game::getRatioFromBoard() const
+{
+    return board->getTileRatio();
 }
 
 void Game::keyPressEvent(QKeyEvent *event)

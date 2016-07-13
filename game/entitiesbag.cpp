@@ -20,12 +20,6 @@ EntitiesBag::~EntitiesBag()
 
 bool EntitiesBag::collidesWithTank(Body *body)
 {
-//    for (Tank* t : m_tanks)
-//        if (t->body()->collidesWith(body) && t->body() != body)
-//            return true;
-
-//    return m_playerTank->body()->collidesWith(body)
-//            && m_playerTank->body() != body;
     return collisionWithTank(body) != nullptr;
 }
 
@@ -77,18 +71,25 @@ void EntitiesBag::killPlayer()
 void EntitiesBag::updateBullets(Board *board)
 {
     std::set<Bullet*> destroyedBullets;
+
+
     for (Bullet* b : m_bullets) {
         b->update();
-        Tank* victim = collisionWithTank(b->body());
 
-        if (board->collidesWithBoard(b->body())){
-            // TODO kill the tile
+        Tank* victim = collisionWithTank(b->body());
+        QList<Tile*> tile_victims = board->detectCollision(b->body());
+
+        if (!tile_victims.empty()){
+            for (Tile* t : tile_victims) {
+                t->health()->hit(b->damage());
+            }
             destroyedBullets.insert(b);
+
         }
         else if (!board->inBoardBounds(b->body())) {
              destroyedBullets.insert(b);
         }
-        else if (victim != b->sender())
+        else if (victim && victim != b->sender())
         {
             victim->health()->hit(b->damage());
             destroyedBullets.insert(b);

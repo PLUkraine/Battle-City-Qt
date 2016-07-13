@@ -10,8 +10,7 @@ Tile::Tile(Body *body, Renderer *renderer, Health *health, bool is_solid) : Enti
     m_body->setParent(this);
     m_health->setParent(this);
 
-    m_health->setOwner(this);
-
+    wire_health();
     wire_renderer_to_body();
 }
 

@@ -19,6 +19,7 @@ public:
 
     void update(Actor* player, Board* board);
 
+
 signals:
     void playerDied();
     void enemyDied();
@@ -30,6 +31,7 @@ private slots:
     void deleteTank(Entity*);
     void killPlayer();
 private:
+
     void updateBullets(Board *board);
     void updateTanks(Board *board);
 

@@ -2,9 +2,8 @@
 #define PHYSICS_H
 #include "components/body.h"
 
-#include <QList>
 
-class Physics : public QObject
+class Physics : public Component
 {
     Q_OBJECT
 public:
@@ -14,10 +13,14 @@ public:
     void undo(Body* body);
 
     qreal max_speed() const;
-    void setMax_speed(qreal max_speed);
+
+
+    qreal speed() const;
+    void setSpeed(const qreal &speed);
 
 private:
     qreal m_max_speed;
+    qreal m_speed;
 };
 
 #endif // PHYSICS_H

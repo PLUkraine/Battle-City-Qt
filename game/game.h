@@ -19,6 +19,7 @@ public:
     virtual ~Game();
 
     void paint(QPainter *painter);
+    QSizeF getRatioFromBoard() const;
 
     void keyPressEvent(QKeyEvent *event);
     void keyReleaseEvent(QKeyEvent *event);

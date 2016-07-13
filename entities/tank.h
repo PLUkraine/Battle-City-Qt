@@ -6,7 +6,7 @@
 class Tank : public Entity
 {
 public:
-    Tank(Body* body, Renderer* renderer, Physics* physics, Health* health);
+    Tank(Body* body, Renderer* renderer, Physics* physics, Health* health, Weapon *weapon);
     ~Tank();
 
     void update();
