@@ -27,7 +27,6 @@ Game::Game(QQuickItem *parent)
       bag(nullptr)
 {
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGame()));
-    createAndStartGame(":/levels/level1.json");
 }
 
 Game::~Game()
@@ -66,23 +65,38 @@ void Game::registerInQML()
 
 void Game::createAndStartGame(QString level)
 {
-    loadLevel(level);
-    timer.setSingleShot(false);
-    timer.start(ResBag::get().timerInterval());
+    if (loadLevel(level)) {
+        m_game_created = true;
+        timer.setSingleShot(false);
+        timer.start(ResBag::get().timerInterval());
+    }
 }
 
 
 void Game::pauseOrResumeGame()
 {
-    if (timer.isActive())
-        timer.stop();
-    else
-        timer.start();
+    if (m_game_created){
+        if (timer.isActive())
+            timer.stop();
+        else
+            timer.start();
+    }
 }
 
 void Game::stopGame()
 {
     timer.stop();
+    m_game_created = false;
+}
+
+void Game::playerHealthChange(int healthLeft)
+{
+    emit playerHealthChanged(healthLeft);
+}
+
+void Game::enemyCountChanged()
+{
+    emit enemyLeftChanged(bag->tanksLeft()+bag->tanksCount());
 }
 
 void Game::updateGame()
@@ -95,7 +109,6 @@ void Game::updateGame()
 void Game::activateGameOver()
 {
     if (timer.isActive()) {
-        qDebug() << "Game over";
         stopGame();
         emit gameOver();
     }
@@ -136,7 +149,7 @@ bool Game::loadLevel(QString filename)
 
     // create board
     TileBuilder* builder = new TileBuilder(this);
-    board = new Board(WINDOW_W, WINDOW_H, builder);
+    board = new Board(this->width(), this->height(), builder);
     board->loadBoard(root);
     connect(board, SIGNAL(baseDestroyed()), this, SLOT(activateGameOver()), Qt::DirectConnection);
     QSizeF ratio = board->getTileRatio();
@@ -154,12 +167,16 @@ bool Game::loadLevel(QString filename)
     int maxTanks = game["maxTanks"].toInt();
     int tanksToSpawn = game["tanks"].toInt();
     int startTanksCount = game["startTanksCount"].toInt();
-    bag = new EntitiesBag(playerTank, tankFactory, maxTanks, tanksToSpawn);
+    bag = new EntitiesBag(playerTank, tankFactory, maxTanks, tanksToSpawn, this);
     connect(bag, SIGNAL(playerDied()), this, SLOT(activateGameOver()));
     connect(bag, SIGNAL(allEnemiesDied()), this, SLOT(activateVictory()));
+    connect(bag, SIGNAL(enemyDied()), this, SLOT(enemyCountChanged()));
 
     for (int i=0; i<startTanksCount; ++i)
         bag->spawnTank(board);
+
+    emit playerHealthChanged(playerTank->health()->health());
+    emit enemyLeftChanged(bag->tanksLeft());
 
     return true;
 }

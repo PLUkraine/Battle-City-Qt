@@ -10,6 +10,7 @@
         <file>tank_sprites.png</file>
         <file>base.png</file>
         <file>player_sprites.png</file>
+        <file>steel_wall.png</file>
     </qresource>
     <qresource prefix="/config">
         <file>gameconfig.json</file>

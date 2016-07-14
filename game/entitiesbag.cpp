@@ -7,7 +7,7 @@ bool xor_(bool x, bool y) {
     return (x && !y) || (!x && y);
 }
 
-EntitiesBag::EntitiesBag(Tank *playerTank, TankFactory* tankFactory, int maxTanks, int tanksToSpawn)
+EntitiesBag::EntitiesBag(Tank *playerTank, TankFactory* tankFactory, int maxTanks, int tanksToSpawn, Game* game)
     : QObject(nullptr),
       m_playerTank(playerTank),
       m_tankFactory(tankFactory),
@@ -16,6 +16,7 @@ EntitiesBag::EntitiesBag(Tank *playerTank, TankFactory* tankFactory, int maxTank
 
 {
     connect(playerTank->health(), SIGNAL(died(Entity*)), this, SLOT(killPlayer()));
+    connect(playerTank->health(), SIGNAL(wasHit(int)), game, SLOT(playerHealthChange(int)), Qt::DirectConnection);
 }
 
 EntitiesBag::~EntitiesBag()
@@ -56,6 +57,16 @@ void EntitiesBag::update(Actor *player, Board *board)
 int EntitiesBag::tanksCount() const
 {
     return m_tanks.size();
+}
+
+int EntitiesBag::tanksLeft() const
+{
+    return m_tanks_left;
+}
+
+Tank *EntitiesBag::playerTank() const
+{
+    return m_playerTank;
 }
 
 void EntitiesBag::addBullet(Bullet *b)

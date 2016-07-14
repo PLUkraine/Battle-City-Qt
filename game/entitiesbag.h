@@ -14,7 +14,7 @@ class EntitiesBag : public QObject
 {
     Q_OBJECT
 public:
-    EntitiesBag(Tank* playerTank, TankFactory* tankFactory, int maxTanks, int tanksToSpawn);
+    EntitiesBag(Tank* playerTank, TankFactory* tankFactory, int maxTanks, int tanksToSpawn, Game *game);
     virtual ~EntitiesBag();
 
     bool collidesWithTank(Body* body);
@@ -23,7 +23,8 @@ public:
     void update(Actor* player, Board* board);
 
     int tanksCount() const;
-
+    int tanksLeft() const;
+    Tank* playerTank() const;
 
 signals:
     void playerDied();

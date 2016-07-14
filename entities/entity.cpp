@@ -73,5 +73,6 @@ void Entity::update()
     if (m_weapon)
     {
         m_weapon->update();
+        ++m_lifetime;
     }
 }

@@ -13,7 +13,7 @@ void Actor::correctToTiles(Board *board, Body *body)
     qreal y=body->y();
 
     switch (body->direction()) {
-        case Direction::LEFT: x = board->getRighTCoord(body); break;
+        case Direction::LEFT: x = board->getRightCoord(body); break;
         case Direction::RIGHT: x = board->getLeftCoord(body); break;
         case Direction::UP: y = board->getLowerCoord(body); break;
         case Direction::DOWN: y = board->getUpperCoord(body); break;

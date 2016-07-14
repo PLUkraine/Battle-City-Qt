@@ -8,7 +8,7 @@ class EntitiesFactory;
 class TileBuilder : public EntitiesFactory
 {
 public:
-    enum TileType { AIR, WALL, BASE };
+    enum TileType { AIR, WALL, BASE, STEEL };
 
     TileBuilder(Game* game);
 

@@ -15,7 +15,8 @@ public:
 public slots:
     virtual void onUpdatePos(qreal x, qreal y);
     virtual void onUpdateSize(qreal width, qreal height);
-    virtual void onUpdateDirection(Direction)=0;
+    virtual void onUpdateDirection(Direction) {}
+    virtual void onUpdateTime(int) {}
 protected:
     void setPart(int row, int col);
 
@@ -23,7 +24,6 @@ protected:
     qreal m_x_tile_ratio;
     qreal m_y_tile_ratio;
 
-    // for future classes
     int m_rows, m_cols, m_column, m_row;
 };
 
@@ -43,6 +43,17 @@ public:
     DirectionRenderer(QImage* image, qreal x_tile_ratio, qreal y_tile_ratio, QQuickItem* parent);
 public slots:
     void onUpdateDirection(Direction);
+};
+
+class AnimationRenderer : public Renderer
+{
+    Q_OBJECT
+public:
+    AnimationRenderer(QImage* image, int frames, int delay, qreal x_tile_ratio, qreal y_tile_ratio, QQuickItem* parent);
+public slots:
+    void onUpdateTime(int lifetime);
+protected:
+    int m_delay;
 };
 
 #endif // RENDERER_H

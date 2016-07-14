@@ -9,8 +9,8 @@
     },
     "tile": {
         "size": 2,
-        "solid": [ false, true, true ],
-        "health": [ 0, 5, 5 ]
+        "solid": [ false, true, true, true ],
+        "health": [ 0, 5, 5, -1 ]
     },
     "bullet": {
         "size": 1.25,
@@ -22,5 +22,9 @@
     },
     "player": {
         "health": 25
+    },
+    "explosionTank": {
+        "duration": 25,
+        "frames": 5
     }
 }

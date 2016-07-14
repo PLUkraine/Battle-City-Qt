@@ -80,3 +80,17 @@ void DirectionRenderer::onUpdateDirection(Direction dir)
     m_row = (int)dir;
     update();
 }
+
+AnimationRenderer::AnimationRenderer(QImage *image, int frames, int delay, qreal x_tile_ratio, qreal y_tile_ratio, QQuickItem *parent)
+    : Renderer(image, x_tile_ratio, y_tile_ratio, frames, 1, parent),
+      m_delay(delay)
+{
+}
+
+void AnimationRenderer::onUpdateTime(int lifetime)
+{
+    if (lifetime % m_delay == 0) {
+        m_row = (m_row + 1) % m_rows;
+        update();
+    }
+}

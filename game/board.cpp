@@ -104,7 +104,7 @@ qreal Board::getLeftCoord(Body *body)
     return body->x();
 }
 
-qreal Board::getRighTCoord(Body *body)
+qreal Board::getRightCoord(Body *body)
 {
     range_p r = mapBodyToTiles(body);
     for (int i=min(r.second.second, m_rows-1); i>=max(0,r.second.first); i--) {

@@ -28,10 +28,15 @@ public:
 signals:
     void gameOver();
     void victory();
+    void enemyLeftChanged(int val);
+    void playerHealthChanged(int healthLeft);
 public slots:
     void createAndStartGame(QString level);
     void pauseOrResumeGame();
     void stopGame();
+
+    void playerHealthChange(int healthLeft);
+    void enemyCountChanged();
 
     void updateGame();
     void activateGameOver();
@@ -46,6 +51,8 @@ private:
     Player* player;
 
     EntitiesBag* bag;
+
+    bool m_game_created;
 };
 
 #endif // GAME_H

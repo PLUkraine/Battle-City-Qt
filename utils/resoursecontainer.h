@@ -49,7 +49,7 @@ public:
     QImage *playerTankSprite();
 
 private:
-    static const int TILES = 3;
+    static const int TILES = 4;
     QImage m_tileSprites[TILES];
     QImage m_tankSprite;
     QImage m_bulletSprite;

@@ -14,6 +14,7 @@ public:
 
 signals:
     void died(Entity*);
+    void wasHit(int healthLeft);
 private:
     int m_health;
 };

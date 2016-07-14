@@ -57,6 +57,7 @@ Bullet *StandartWeapon::shoot()
     Renderer* rend = new StaticRenderer(ResBag::get().bulletSprite(),
                                   ratio.width(), ratio.height(),
                                   m_game);
+    rend->setZ(1);
 
     qreal bullet_w = ResBag::get().bulletSize();
     qreal bullet_h = ResBag::get().bulletSize();

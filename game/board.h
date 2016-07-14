@@ -22,7 +22,7 @@ public:
 
 
     qreal getLeftCoord(Body* body);
-    qreal getRighTCoord(Body* body);
+    qreal getRightCoord(Body* body);
     qreal getUpperCoord(Body* body);
     qreal getLowerCoord(Body* body);
     bool collidesWithBoard(Body* body);

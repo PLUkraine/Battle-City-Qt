@@ -98,6 +98,7 @@ ResBag::ResBag()
     m_tileSprites[0] = QImage(":/sprites/air.png");
     m_tileSprites[1] = QImage(":/sprites/wall.png");
     m_tileSprites[2] = QImage(":/sprites/base.png");
+    m_tileSprites[3] = QImage(":/sprites/steel_wall.png");
     m_tankSprite = QImage(":/sprites/tank_sprites.png");
     m_bulletSprite = QImage(":/sprites/bullet.png");
     m_playerTankSprite = QImage(":/sprites/player_sprites.png");
