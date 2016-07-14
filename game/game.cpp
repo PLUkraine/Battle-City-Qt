@@ -12,6 +12,7 @@
 #include "game/entitiesbag.h"
 #include"game/board.h"
 #include "factories/tankfactory.h"
+#include "factories/explosionfactory.h"
 
 const qreal WINDOW_W = 690;
 const qreal WINDOW_H = 690;
@@ -45,15 +46,14 @@ QSizeF Game::getRatioFromBoard() const
 
 void Game::keyPressEvent(QKeyEvent *event)
 {
-
-    if (!event->isAutoRepeat()) {
+    if (m_game_created && !event->isAutoRepeat()) {
         player->setKey((Qt::Key)event->key(), true);
     }
 }
 
 void Game::keyReleaseEvent(QKeyEvent *event)
 {
-    if (!event->isAutoRepeat()) {
+    if (m_game_created && !event->isAutoRepeat()) {
         player->setKey((Qt::Key)event->key(), false);
     }
 }
@@ -167,7 +167,9 @@ bool Game::loadLevel(QString filename)
     int maxTanks = game["maxTanks"].toInt();
     int tanksToSpawn = game["tanks"].toInt();
     int startTanksCount = game["startTanksCount"].toInt();
-    bag = new EntitiesBag(playerTank, tankFactory, maxTanks, tanksToSpawn, this);
+    ExplosionFactory* explFactory = new ExplosionFactory(this);
+    explFactory->setRatio(ratio);
+    bag = new EntitiesBag(playerTank, tankFactory, explFactory, maxTanks, tanksToSpawn, this);
     connect(bag, SIGNAL(playerDied()), this, SLOT(activateGameOver()));
     connect(bag, SIGNAL(allEnemiesDied()), this, SLOT(activateVictory()));
     connect(bag, SIGNAL(enemyDied()), this, SLOT(enemyCountChanged()));

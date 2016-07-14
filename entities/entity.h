@@ -28,6 +28,8 @@ public:
 
     Weapon *weapon() const;
 
+    int ticks_lived() const;
+
 protected:
     // connect body change signals to the renderer
     void wire_renderer_to_body();
@@ -47,7 +49,7 @@ protected:
     Health* m_health;
     Weapon* m_weapon;
 
-    // int m_ticks_lived; // maybe later
+    int m_ticks_lived;
 };
 
 #endif // ENTITY_H

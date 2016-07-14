@@ -48,12 +48,17 @@ public:
 
     QImage *playerTankSprite();
 
+    int explosionDuration() const;
+
+    QImage* explosionSprite();
+
 private:
     static const int TILES = 4;
     QImage m_tileSprites[TILES];
     QImage m_tankSprite;
     QImage m_bulletSprite;
     QImage m_playerTankSprite;
+    QImage m_explosionSprite;
 
     qreal m_tankSize, m_tileSize, m_bulletSize;
     qreal m_tankSpeed, m_bulletSpeed;
@@ -65,6 +70,8 @@ private:
     qreal m_weaponCooldown;
     int m_timerInterval;
     int m_playerTankHealth;
+
+    int m_explosionDuration;
 
     ResBag();
     void readConfigs();

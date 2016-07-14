@@ -51,7 +51,7 @@ class AnimationRenderer : public Renderer
 public:
     AnimationRenderer(QImage* image, int frames, int delay, qreal x_tile_ratio, qreal y_tile_ratio, QQuickItem* parent);
 public slots:
-    void onUpdateTime(int lifetime);
+    void onUpdateTime(int ticks_lived);
 protected:
     int m_delay;
 };

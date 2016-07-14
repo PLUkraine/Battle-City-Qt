@@ -11,6 +11,7 @@
         <file>base.png</file>
         <file>player_sprites.png</file>
         <file>steel_wall.png</file>
+        <file>explosion.png</file>
     </qresource>
     <qresource prefix="/config">
         <file>gameconfig.json</file>

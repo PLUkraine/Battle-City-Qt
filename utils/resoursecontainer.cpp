@@ -93,6 +93,16 @@ QImage *ResBag::playerTankSprite()
     return &m_playerTankSprite;
 }
 
+int ResBag::explosionDuration() const
+{
+    return m_explosionDuration;
+}
+
+QImage *ResBag::explosionSprite()
+{
+    return &m_explosionSprite;
+}
+
 ResBag::ResBag()
 {
     m_tileSprites[0] = QImage(":/sprites/air.png");
@@ -102,6 +112,7 @@ ResBag::ResBag()
     m_tankSprite = QImage(":/sprites/tank_sprites.png");
     m_bulletSprite = QImage(":/sprites/bullet.png");
     m_playerTankSprite = QImage(":/sprites/player_sprites.png");
+    m_explosionSprite = QImage(":/sprites/explosion.png");
 
     readConfigs();
 }
@@ -153,6 +164,9 @@ void ResBag::readConfigs()
 
     // read player info
     m_playerTankHealth = root["player"].toObject()["health"].toInt();
+
+    // read explosions info
+    m_explosionDuration = root["explosion"].toObject()["duration"].toInt();
 }
 
 void ResBag::handleError(QString message)

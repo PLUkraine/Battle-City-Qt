@@ -87,10 +87,7 @@ AnimationRenderer::AnimationRenderer(QImage *image, int frames, int delay, qreal
 {
 }
 
-void AnimationRenderer::onUpdateTime(int lifetime)
+void AnimationRenderer::onUpdateTime(int ticks_lived)
 {
-    if (lifetime % m_delay == 0) {
-        m_row = (m_row + 1) % m_rows;
-        update();
-    }
+    setPart((ticks_lived/m_delay)%m_delay, 0);
 }

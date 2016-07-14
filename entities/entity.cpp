@@ -5,7 +5,8 @@ Entity::Entity() : QObject(nullptr),
     m_body(nullptr),
     m_physics(nullptr),
     m_health(nullptr),
-    m_weapon(nullptr)
+    m_weapon(nullptr),
+    m_ticks_lived(0)
 {
 }
 
@@ -24,6 +25,7 @@ void Entity::wire_renderer_to_body()
     m_renderer->onUpdatePos(m_body->x(), m_body->y());
     m_renderer->onUpdateSize(m_body->width(), m_body->height());
     m_renderer->onUpdateDirection(m_body->direction());
+    m_renderer->onUpdateTime(m_ticks_lived);
 
     connect(m_body, SIGNAL(positionChanged(qreal,qreal)), m_renderer, SLOT(onUpdatePos(qreal,qreal)));
     connect(m_body, SIGNAL(sizeChanged(qreal,qreal)), m_renderer, SLOT(onUpdateSize(qreal,qreal)));
@@ -53,6 +55,11 @@ void Entity::dispose_of_renderer()
     delete m_renderer;
 }
 
+int Entity::ticks_lived() const
+{
+    return m_ticks_lived;
+}
+
 Weapon *Entity::weapon() const
 {
     return m_weapon;
@@ -70,9 +77,12 @@ Physics *Entity::physics() const
 
 void Entity::update()
 {
+    ++m_ticks_lived;
     if (m_weapon)
     {
         m_weapon->update();
-        ++m_lifetime;
+    }
+    if (m_renderer) {
+        m_renderer->onUpdateTime(m_ticks_lived);
     }
 }
