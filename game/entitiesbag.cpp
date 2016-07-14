@@ -1,9 +1,16 @@
 #include "entitiesbag.h"
 #include "game/board.h"
+#include "factories/tankfactory.h"
+#include <algorithm>
 
-EntitiesBag::EntitiesBag(Tank *playerTank, int maxTanks, int tanksToSpawn)
+bool xor_(bool x, bool y) {
+    return (x && !y) || (!x && y);
+}
+
+EntitiesBag::EntitiesBag(Tank *playerTank, TankFactory* tankFactory, int maxTanks, int tanksToSpawn)
     : QObject(nullptr),
       m_playerTank(playerTank),
+      m_tankFactory(tankFactory),
       m_max_tanks(maxTanks),
       m_tanks_left(tanksToSpawn)
 
@@ -18,6 +25,7 @@ EntitiesBag::~EntitiesBag()
     for (Bullet* bullet : m_bullets)
         delete bullet;
     delete m_playerTank;
+    delete m_tankFactory;
 }
 
 bool EntitiesBag::collidesWithTank(Body *body)
@@ -62,12 +70,34 @@ void EntitiesBag::addTank(Tank *t)
     m_ai[t] = new DummyAI();
 }
 
-void EntitiesBag::spawnTank()
+void EntitiesBag::spawnTank(Board* board)
 {
-    if (m_tanks_left > 0) {
+    if (m_tanks_left > 0 && m_tanks.size() < (uint)m_max_tanks) {
+        QList<const Tile *> freeTiles = board->spawnableTiles();
+        std::random_shuffle(freeTiles.begin(), freeTiles.end());
+        Tank * tank = m_tankFactory->createTank(0,0);
+        bool success = false;
 
+        for (const Tile* t : freeTiles) {
+            tank->body()->setPosition(t->body()->x(), t->body()->y());
+            // check if does not collide with anyone
+            if (!board->collidesWithBoard(tank->body())
+                    && !collidesWithTank(tank->body())
+                    && board->inBoardBounds(tank->body()))
+            {
+                success = true;
+                break;
+            }
+        }
 
-        m_tanks_left--;
+        if (success) {
+            addTank(tank);
+            m_tanks_left--;
+            if (m_tanks_left == 0)
+                emit allEnemiesSpawned();
+        } else  {
+            delete tank;
+        }
     }
 }
 
@@ -111,7 +141,8 @@ void EntitiesBag::updateBullets(Board *board)
         else if (!board->inBoardBounds(b->body())) {
              destroyedBullets.insert(b);
         }
-        else if (victim && victim != b->sender())
+        else if (victim &&
+                 xor_(victim==m_playerTank, b->sender()==m_playerTank))
         {
             victim->health()->hit(b->damage());
             destroyedBullets.insert(b);

@@ -6,8 +6,8 @@ import BattleCity 1.0
 
 Window {
     visible: true
-    width: 640
-    height: 480
+    width: 1000
+    height: 800
     title: qsTr("Hello World")
 
     MessageDialog {
@@ -31,6 +31,9 @@ Window {
         visible: true
         onGameOver: {
             gameOverDialog.visible = true
+        }
+        onVictory: {
+            console.log("VINNER IS YOU!!!");
         }
     }
 

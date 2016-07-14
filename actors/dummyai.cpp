@@ -20,7 +20,7 @@ void DummyAI::makeMove(Board *board, EntitiesBag *bag, Tank *tank)
         m_togo--;
     } else {
         // up to 9 frames
-        m_togo = int(dist(gen) * 6) + 7;
+        m_togo = int(dist(gen) * 10) + 20;
         memset(m_control, 0, sizeof(m_control));
         int c = (int)(dist(gen) * 4);
         m_control[c] = true;

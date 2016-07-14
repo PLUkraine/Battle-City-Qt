@@ -34,6 +34,7 @@
         "y": 24
     },
     "game": {
+        "startTanksCount": 0,
         "maxTanks": 4,
         "tanks": 10
     }

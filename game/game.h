@@ -27,6 +27,7 @@ public:
 
 signals:
     void gameOver();
+    void victory();
 public slots:
     void createAndStartGame(QString level);
     void pauseOrResumeGame();
@@ -34,6 +35,7 @@ public slots:
 
     void updateGame();
     void activateGameOver();
+    void activateVictory();
 private:
     void cleanup();
     bool loadLevel(QString filename);

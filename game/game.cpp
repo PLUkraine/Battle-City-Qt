@@ -5,6 +5,7 @@
 #include <QJsonDocument>
 #include <QString>
 #include <QFile>
+#include <random>
 
 #include "game.h"
 #include "utils/resoursecontainer.h"
@@ -14,6 +15,10 @@
 
 const qreal WINDOW_W = 690;
 const qreal WINDOW_H = 690;
+
+std::random_device rd;
+std::mt19937 gen(rd());
+std::uniform_real_distribution<double> dist(0.0,1.0);
 
 Game::Game(QQuickItem *parent)
     : QQuickPaintedItem(parent),
@@ -83,6 +88,8 @@ void Game::stopGame()
 void Game::updateGame()
 {
     bag->update(player, board);
+    if (dist(gen)< 0.1)
+        bag->spawnTank(board);
 }
 
 void Game::activateGameOver()
@@ -92,6 +99,12 @@ void Game::activateGameOver()
         stopGame();
         emit gameOver();
     }
+}
+
+void Game::activateVictory()
+{
+    stopGame();
+    emit victory();
 }
 
 void Game::cleanup()
@@ -132,15 +145,22 @@ bool Game::loadLevel(QString filename)
     int player_x = root["player"].toObject()["x"].toInt()*ResBag::get().tileSize();
     int player_y = root["player"].toObject()["y"].toInt()*ResBag::get().tileSize();
     player = new Player();
-    TankFactory tankFactory(this);
-    tankFactory.setRatio(ratio);
-    Tank* playerTank = tankFactory.createPlayerTank(player_x, player_y);
+    TankFactory* tankFactory = new TankFactory(this);
+    tankFactory->setRatio(ratio);
+    Tank* playerTank = tankFactory->createPlayerTank(player_x, player_y);
 
     // create entities bag
-    int maxTanks = root["game"].toObject()["maxTanks"].toInt();
-    int tanksToSpawn = root["game"].toObject()["tanks"].toInt();
-    bag = new EntitiesBag(playerTank, maxTanks, tanksToSpawn);
+    QJsonObject game = root["game"].toObject();
+    int maxTanks = game["maxTanks"].toInt();
+    int tanksToSpawn = game["tanks"].toInt();
+    int startTanksCount = game["startTanksCount"].toInt();
+    bag = new EntitiesBag(playerTank, tankFactory, maxTanks, tanksToSpawn);
     connect(bag, SIGNAL(playerDied()), this, SLOT(activateGameOver()));
+    connect(bag, SIGNAL(allEnemiesDied()), this, SLOT(activateVictory()));
+
+    for (int i=0; i<startTanksCount; ++i)
+        bag->spawnTank(board);
+
     return true;
 }
 

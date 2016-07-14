@@ -9,11 +9,12 @@
 #include "actors/player.h"
 #include "actors/dummyai.h"
 
+class TankFactory;
 class EntitiesBag : public QObject
 {
     Q_OBJECT
 public:
-    EntitiesBag(Tank* playerTank, int maxTanks, int tanksToSpawn);
+    EntitiesBag(Tank* playerTank, TankFactory* tankFactory, int maxTanks, int tanksToSpawn);
     virtual ~EntitiesBag();
 
     bool collidesWithTank(Body* body);
@@ -28,14 +29,14 @@ signals:
     void playerDied();
     void enemyDied();
     void allEnemiesDied();
-
+    void allEnemiesSpawned();
 public slots:
     void addBullet(Bullet*);
-    void addTank(Tank*);
-    void spawnTank();
+    void spawnTank(Board *board);
 private slots:
     void deleteTank(Entity*);
     void killPlayer();
+    void addTank(Tank*);
 private:
 
     void updateBullets(Board *board);
@@ -45,6 +46,7 @@ private:
     std::set<Tank*> m_tanks;
     std::map<Tank*, DummyAI*> m_ai;
     Tank* m_playerTank;
+    TankFactory* m_tankFactory;
 
     // max ammount of tanks on board
     int m_max_tanks;
