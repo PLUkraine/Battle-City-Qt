@@ -13,4 +13,7 @@
     <qresource prefix="/config">
         <file>gameconfig.json</file>
     </qresource>
+    <qresource prefix="/levels">
+        <file>level1.json</file>
+    </qresource>
 </RCC>

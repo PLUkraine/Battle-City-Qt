@@ -29,6 +29,9 @@ public:
 public slots:
     void updateGame();
 private:
+    void cleanup();
+    bool loadLevel(QString filename);
+
     QTimer timer;
 
     Board* board;

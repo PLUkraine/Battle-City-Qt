@@ -16,7 +16,7 @@ public:
     Board(qreal width, qreal height, TileBuilder* builder);
     virtual ~Board();
 
-    void loadBoard(QString filename);
+    void loadBoard(QJsonObject &root);
     void resize(QSizeF newSize);
     QSizeF getTileRatio() const ;
 

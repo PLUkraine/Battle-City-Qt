@@ -1,8 +1,6 @@
 #include <QJsonArray>
 #include <QJsonObject>
 #include <QJsonDocument>
-#include <QString>
-#include <QFile>
 #include <QDebug>
 #include <algorithm>
 
@@ -34,16 +32,8 @@ Board::~Board()
     delete m_builder;
 }
 
-void Board::loadBoard(QString filename)
+void Board::loadBoard(QJsonObject& root)
 {
-    QFile inFile(filename);
-    inFile.open(QIODevice::ReadOnly | QIODevice::Text);
-    QByteArray val = inFile.readAll();
-    inFile.close();
-
-    QJsonParseError er;
-    QJsonDocument doc = QJsonDocument::fromJson(val, &er);
-    QJsonObject root = doc.object();
     QJsonArray data = root["data"].toArray();
 
     int cols = root["cols"].toInt();
@@ -231,6 +221,7 @@ void Board::destroyTile(Entity *e)
     range_p r = mapBodyToTiles(e->body());
     int index = r.second.first*m_cols + r.first.first;
     // TODO check if base
+
     m_tiles[index] = m_builder->createTile(TileBuilder::AIR, e->body()->pos());
     connectTile(index);
 
