@@ -1,29 +1,21 @@
 #ifndef TILEBUILDER_H
 #define TILEBUILDER_H
 #include "entities/tile.h"
-#include "game/game.h"
+#include "entitiesfactory.h"
+#include "utils/resoursecontainer.h"
 
-class Game;
-class TileBuilder
+class EntitiesFactory;
+class TileBuilder : public EntitiesFactory
 {
 public:
-    enum TileType { AIR, WALL };
+    enum TileType { AIR, WALL, BASE };
 
     TileBuilder(Game* game);
 
     Tile* createTile(TileType type, QPointF pos);
     Tile* createTile(TileType type, qreal x, qreal y);
 
-    void setSize(qreal tileSize);
-    void setRatio(qreal x_ratio, qreal y_ratio);
-
-    qreal width() const;
-    qreal height() const;
-
 protected:
-    Game* m_game;
-    qreal m_width, m_height;
-    qreal m_x_ratio, m_y_ratio;
 };
 
 #endif // TILEBUILDER_H

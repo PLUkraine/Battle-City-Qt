@@ -13,7 +13,7 @@ class EntitiesBag : public QObject
 {
     Q_OBJECT
 public:
-    EntitiesBag(Tank* playerTank);
+    EntitiesBag(Tank* playerTank, int maxTanks, int tanksToSpawn);
     virtual ~EntitiesBag();
 
     bool collidesWithTank(Body* body);
@@ -21,14 +21,18 @@ public:
 
     void update(Actor* player, Board* board);
 
+    int tanksCount() const;
+
 
 signals:
     void playerDied();
     void enemyDied();
+    void allEnemiesDied();
 
 public slots:
     void addBullet(Bullet*);
     void addTank(Tank*);
+    void spawnTank();
 private slots:
     void deleteTank(Entity*);
     void killPlayer();
@@ -41,6 +45,10 @@ private:
     std::set<Tank*> m_tanks;
     std::map<Tank*, DummyAI*> m_ai;
     Tank* m_playerTank;
+
+    // max ammount of tanks on board
+    int m_max_tanks;
+    int m_tanks_left;
 };
 
 #endif // ENTITIESBAG_H

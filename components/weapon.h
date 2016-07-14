@@ -1,10 +1,11 @@
 #ifndef WEAPON_H
 #define WEAPON_H
+#include <QQuickPaintedItem>
 
 #include "components/component.h"
 
-class Game;
 class Bullet;
+class Game;
 class Weapon : public Component
 {
     Q_OBJECT
@@ -29,7 +30,7 @@ class StandartWeapon : public Weapon
 {
     Q_OBJECT
 public:
-    StandartWeapon(Game* game);
+    StandartWeapon(Game *game);
     Bullet* shoot();
 
 };

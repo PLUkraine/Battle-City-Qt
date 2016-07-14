@@ -1,9 +1,11 @@
 #include "entitiesbag.h"
 #include "game/board.h"
 
-EntitiesBag::EntitiesBag(Tank *playerTank)
+EntitiesBag::EntitiesBag(Tank *playerTank, int maxTanks, int tanksToSpawn)
     : QObject(nullptr),
-      m_playerTank(playerTank)
+      m_playerTank(playerTank),
+      m_max_tanks(maxTanks),
+      m_tanks_left(tanksToSpawn)
 
 {
     connect(playerTank->health(), SIGNAL(died(Entity*)), this, SLOT(killPlayer()));
@@ -43,6 +45,11 @@ void EntitiesBag::update(Actor *player, Board *board)
     updateBullets(board);
 }
 
+int EntitiesBag::tanksCount() const
+{
+    return m_tanks.size();
+}
+
 void EntitiesBag::addBullet(Bullet *b)
 {
     m_bullets.insert(b);
@@ -55,6 +62,15 @@ void EntitiesBag::addTank(Tank *t)
     m_ai[t] = new DummyAI();
 }
 
+void EntitiesBag::spawnTank()
+{
+    if (m_tanks_left > 0) {
+
+
+        m_tanks_left--;
+    }
+}
+
 void EntitiesBag::deleteTank(Entity *tank)
 {
     Tank* t = (Tank*)tank;
@@ -64,6 +80,9 @@ void EntitiesBag::deleteTank(Entity *tank)
     m_ai.erase(t);
     delete t;
     emit enemyDied();
+    if (m_tanks_left == 0 && m_tanks.empty()) {
+        emit allEnemiesDied();
+    }
 }
 
 void EntitiesBag::killPlayer()

@@ -5,11 +5,7 @@
 #include "factories/entitiesfactory.h"
 
 TileBuilder::TileBuilder(Game *game)
-    : m_game(game),
-      m_width(0),
-      m_height(0),
-      m_x_ratio(0),
-      m_y_ratio(0)
+    : EntitiesFactory(game)
 {
     setSize(ResBag::get().tileSize());
 }
@@ -29,25 +25,4 @@ Tile *TileBuilder::createTile(TileBuilder::TileType type, qreal x, qreal y)
 
     Tile * tile = new Tile(body, rend, health, ResBag::get().tileSolidness()[type]);
     return tile;
-}
-
-void TileBuilder::setSize(qreal tileSize)
-{
-    m_width = m_height = tileSize;
-}
-
-void TileBuilder::setRatio(qreal x_ratio, qreal y_ratio)
-{
-    m_x_ratio = x_ratio;
-    m_y_ratio = y_ratio;
-}
-
-qreal TileBuilder::width() const
-{
-    return m_width;
-}
-
-qreal TileBuilder::height() const
-{
-    return m_height;
 }

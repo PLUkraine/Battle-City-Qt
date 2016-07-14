@@ -42,19 +42,29 @@ public:
 
     bool *tileSolidness();
 
+    int timerInterval() const;
+
+    int playerTankHealth() const;
+
+    QImage *playerTankSprite();
+
 private:
-    QImage m_tileSprites[2];
+    static const int TILES = 3;
+    QImage m_tileSprites[TILES];
     QImage m_tankSprite;
     QImage m_bulletSprite;
+    QImage m_playerTankSprite;
 
     qreal m_tankSize, m_tileSize, m_bulletSize;
     qreal m_tankSpeed, m_bulletSpeed;
     qreal m_bulletDamage;
     qreal m_tankHealth;
-    qreal m_tileHealth[2];
-    bool m_tileSolidness[2];
+    qreal m_tileHealth[TILES];
+    bool m_tileSolidness[TILES];
 
     qreal m_weaponCooldown;
+    int m_timerInterval;
+    int m_playerTankHealth;
 
     ResBag();
     void readConfigs();

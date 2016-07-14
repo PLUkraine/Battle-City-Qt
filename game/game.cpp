@@ -9,6 +9,8 @@
 #include "game.h"
 #include "utils/resoursecontainer.h"
 #include "game/entitiesbag.h"
+#include"game/board.h"
+#include "factories/tankfactory.h"
 
 const qreal WINDOW_W = 690;
 const qreal WINDOW_H = 690;
@@ -19,12 +21,8 @@ Game::Game(QQuickItem *parent)
       player(nullptr),
       bag(nullptr)
 {
-    loadLevel(":/levels/level1.json");
-
-    // start game
-    timer.setSingleShot(false);
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGame()));
-    timer.start(1000/30);
+    createAndStartGame(":/levels/level1.json");
 }
 
 Game::~Game()
@@ -44,8 +42,7 @@ QSizeF Game::getRatioFromBoard() const
 void Game::keyPressEvent(QKeyEvent *event)
 {
 
-    if (!event->isAutoRepeat())
-    {
+    if (!event->isAutoRepeat()) {
         player->setKey((Qt::Key)event->key(), true);
     }
 }
@@ -62,9 +59,39 @@ void Game::registerInQML()
     qmlRegisterType<Game>("BattleCity", 1, 0, "Game");
 }
 
+void Game::createAndStartGame(QString level)
+{
+    loadLevel(level);
+    timer.setSingleShot(false);
+    timer.start(ResBag::get().timerInterval());
+}
+
+
+void Game::pauseOrResumeGame()
+{
+    if (timer.isActive())
+        timer.stop();
+    else
+        timer.start();
+}
+
+void Game::stopGame()
+{
+    timer.stop();
+}
+
 void Game::updateGame()
 {
     bag->update(player, board);
+}
+
+void Game::activateGameOver()
+{
+    if (timer.isActive()) {
+        qDebug() << "Game over";
+        stopGame();
+        emit gameOver();
+    }
 }
 
 void Game::cleanup()
@@ -91,46 +118,29 @@ bool Game::loadLevel(QString filename)
         return false;
     }
 
-    // clean before any changes
+    // clean before making any changes
     cleanup();
 
     // create board
     TileBuilder* builder = new TileBuilder(this);
     board = new Board(WINDOW_W, WINDOW_H, builder);
     board->loadBoard(root);
+    connect(board, SIGNAL(baseDestroyed()), this, SLOT(activateGameOver()), Qt::DirectConnection);
     QSizeF ratio = board->getTileRatio();
 
     // create player
-    int player_x = root["player"].toObject()["x"].toInt();
-    int player_y = root["player"].toObject()["y"].toInt();
+    int player_x = root["player"].toObject()["x"].toInt()*ResBag::get().tileSize();
+    int player_y = root["player"].toObject()["y"].toInt()*ResBag::get().tileSize();
     player = new Player();
-    Tank* playerTank = new Tank(
-                new Body(player_x*ResBag::get().tileSize(), player_y*ResBag::get().tileSize(),
-                         ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
-                new DirectionRenderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
-                new Physics(ResBag::get().tankSpeed()),
-                new Health(ResBag::get().tankHealth()),
-                new StandartWeapon(this)
-                );
+    TankFactory tankFactory(this);
+    tankFactory.setRatio(ratio);
+    Tank* playerTank = tankFactory.createPlayerTank(player_x, player_y);
 
     // create entities bag
-    bag = new EntitiesBag(playerTank);
-//    bag->addTank(new Tank(
-//                     new Body(3*ResBag::get().tileSize(), 5*ResBag::get().tileSize(),
-//                              ResBag::get().tankSize(), ResBag::get().tankSize(), Direction::DOWN),
-//                     new DirectionRenderer(ResBag::get().tankSprite(), ratio.width(), ratio.height(), this),
-//                     new Physics(ResBag::get().tankSpeed()),
-//                     new Health(ResBag::get().tankHealth()),
-//                     new StandartWeapon(this)
-//                     ));
-//    bag->addBullet(new Bullet(
-//                       new Body(3*ResBag::get().tileSize(), 4*ResBag::get().tileSize(),
-//                                ResBag::get().bulletSize(), ResBag::get().bulletSize(), Direction::RIGHT),
-//                       new StaticRenderer(ResBag::get().bulletSprite(), ratio.width(), ratio.height(), this),
-//                       new Physics(ResBag::get().bulletSpeed()),
-//                       nullptr,
-//                       ResBag::get().bulletDamage()
-//                       ));
+    int maxTanks = root["game"].toObject()["maxTanks"].toInt();
+    int tanksToSpawn = root["game"].toObject()["tanks"].toInt();
+    bag = new EntitiesBag(playerTank, maxTanks, tanksToSpawn);
+    connect(bag, SIGNAL(playerDied()), this, SLOT(activateGameOver()));
     return true;
 }
 

@@ -7,7 +7,6 @@
 
 #include <set>
 
-#include"game/board.h"
 #include"actors/player.h"
 
 class Board;
@@ -26,8 +25,15 @@ public:
 
     static void registerInQML();
 
+signals:
+    void gameOver();
 public slots:
+    void createAndStartGame(QString level);
+    void pauseOrResumeGame();
+    void stopGame();
+
     void updateGame();
+    void activateGameOver();
 private:
     void cleanup();
     bool loadLevel(QString filename);

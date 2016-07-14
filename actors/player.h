@@ -18,6 +18,7 @@ public:
     void makeMove(Board* board, EntitiesBag* bag, Tank* tank);
 private:
     map<Qt::Key, Control> m_bind;
+    int m_lives;
 };
 
 #endif // PLAYER_H

@@ -29,6 +29,7 @@ public:
     bool inBoardBounds(Body* body);
 
     QList<Tile*> detectCollision(Body* body);
+    QList<const Tile *> spawnableTiles();
 signals:
     void baseDestroyed();
 
@@ -43,6 +44,7 @@ protected:
     qreal leftBound();
     qreal topBound();
 private:
+    QList<int> m_base_tiles;
     Tile ** m_tiles;
     // REAL board size
     qreal m_board_width;

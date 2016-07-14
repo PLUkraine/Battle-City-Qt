@@ -45,11 +45,16 @@ void Board::loadBoard(QJsonObject& root)
     m_builder->setRatio(m_board_width / (cols * m_builder->width()),
                       m_board_height / (rows * m_builder->height()));
 
+    m_base_tiles.clear();
     m_tiles = new Tile*[cols*rows];
     for (int i=0; i<cols*rows; ++i) {
         int y = (i / cols) * m_builder->height();
         int x = (i % cols) * m_builder->width();
-        m_tiles[i] = m_builder->createTile((TileBuilder::TileType)data[i].toInt(), x, y);
+        int type = data[i].toInt();
+        m_tiles[i] = m_builder->createTile((TileBuilder::TileType)type, x, y);
+        if (type == TileBuilder::BASE) {
+            m_base_tiles.append(i);
+        }
         connectTile(i);
     }
 
@@ -216,11 +221,25 @@ QList<Tile *> Board::detectCollision(Body *body)
     return tiles;
 }
 
+QList<const Tile *> Board::spawnableTiles()
+{
+    QList<const Tile *> result;
+    for (int i=0; i<m_cols*m_rows; ++i) {
+        if (!m_tiles[i]->is_solid()) {
+            result.append(m_tiles[i]);
+        }
+    }
+    return result;
+}
+
 void Board::destroyTile(Entity *e)
 {
     range_p r = mapBodyToTiles(e->body());
     int index = r.second.first*m_cols + r.first.first;
-    // TODO check if base
+    if (m_base_tiles.contains(index)) {
+        m_base_tiles.removeOne(index);
+        emit baseDestroyed();
+    }
 
     m_tiles[index] = m_builder->createTile(TileBuilder::AIR, e->body()->pos());
     connectTile(index);

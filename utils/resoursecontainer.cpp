@@ -78,12 +78,29 @@ bool *ResBag::tileSolidness()
     return m_tileSolidness;
 }
 
+int ResBag::timerInterval() const
+{
+    return m_timerInterval;
+}
+
+int ResBag::playerTankHealth() const
+{
+    return m_playerTankHealth;
+}
+
+QImage *ResBag::playerTankSprite()
+{
+    return &m_playerTankSprite;
+}
+
 ResBag::ResBag()
 {
     m_tileSprites[0] = QImage(":/sprites/air.png");
     m_tileSprites[1] = QImage(":/sprites/wall.png");
+    m_tileSprites[2] = QImage(":/sprites/base.png");
     m_tankSprite = QImage(":/sprites/tank_sprites.png");
     m_bulletSprite = QImage(":/sprites/bullet.png");
+    m_playerTankSprite = QImage(":/sprites/player_sprites.png");
 
     readConfigs();
 }
@@ -130,6 +147,11 @@ void ResBag::readConfigs()
     QJsonObject stdWeapon = root["standardWeapon"].toObject();
     m_weaponCooldown = stdWeapon["cooldown"].toInt();
 
+    // read game info
+    m_timerInterval = root["game"].toObject()["timerInterval"].toInt();
+
+    // read player info
+    m_playerTankHealth = root["player"].toObject()["health"].toInt();
 }
 
 void ResBag::handleError(QString message)
