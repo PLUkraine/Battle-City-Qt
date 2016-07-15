@@ -14,7 +14,6 @@ Explosion::~Explosion()
 {
     unwire_renderer_from_body();
     dispose_of_renderer();
-    qDebug() << "Explosion deleted";
 }
 
 bool Explosion::mustDie() const

@@ -10,9 +10,11 @@ Window {
     visible: true
     width: 1000
     height: 800
-    title: qsTr("Battle City clone Qt edition I bet no one read this lol")
-    minimumHeight: 400
-    minimumWidth: 600
+    title: qsTr("Battle City clone Qt edition")
+    minimumHeight: 800
+    minimumWidth: 1000
+    maximumHeight: 800
+    maximumWidth: 1000
 
     Rectangle  {
         id: uipanel
@@ -29,15 +31,36 @@ Window {
                 text: "Pause/resume game"
                 onClicked: gameObj.pauseOrResumeGame()
             }
+
             Label {
-                id: healthLabel
-                text: "Health: 0"
+                id: controlsLabel
+                text: "Move: arrows\nShoot: space"
                 font.pointSize: 13
             }
-            Label {
-                id: enemiesLeftLabel
-                text: "Enemies left: 0"
-                font.pointSize: 13
+
+            ColumnLayout {
+                Label {
+                    text: "Health"
+                    font.pointSize: 13
+                }
+                ProgressBar{
+                    width: 100
+                    id: healthBar
+                    value: 0
+                    maximumValue: 10
+                }
+            }
+            ColumnLayout {
+                Label {
+                    text: "Enemies left"
+                    font.pointSize: 13
+                }
+                ProgressBar{
+                    width: 100
+                    id: enemiesLeftBar
+                    value: 0
+                    maximumValue: 10
+                }
             }
         }
     }
@@ -95,10 +118,16 @@ Window {
         }
         Component.onCompleted: {
             gameObj.playerHealthChanged.connect(function(h) {
-                healthLabel.text = "Health: "+h;
+                healthBar.value = h;
             });
             gameObj.enemyLeftChanged.connect(function(en) {
-               enemiesLeftLabel.text = "Enemies left: " + en;
+               enemiesLeftBar.value = en;
+            });
+            gameObj.gameStarted.connect(function (h, en) {
+                healthBar.maximumValue = h;
+                healthBar.value = h;
+                enemiesLeftBar.maximumValue = en;
+                enemiesLeftBar.value = en;
             });
         }
 

@@ -180,7 +180,7 @@ void EntitiesBag::updateBullets(Board *board)
         }
     }
     for (Bullet* b: destroyedBullets){
-        // spawnExplosion(b->body());
+        spawnExplosion(b->body());
         m_bullets.erase(b);
         delete b;
     }

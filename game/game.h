@@ -30,6 +30,7 @@ signals:
     void victory();
     void enemyLeftChanged(int val);
     void playerHealthChanged(int healthLeft);
+    void gameStarted(int, int);
 public slots:
     void createAndStartGame(QString level);
     void pauseOrResumeGame();

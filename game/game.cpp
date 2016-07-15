@@ -66,6 +66,7 @@ void Game::registerInQML()
 void Game::createAndStartGame(QString level)
 {
     if (loadLevel(level)) {
+        emit gameStarted(bag->playerTank()->health()->health(), bag->tanksLeft());
         m_game_created = true;
         timer.setSingleShot(false);
         timer.start(ResBag::get().timerInterval());
@@ -176,9 +177,6 @@ bool Game::loadLevel(QString filename)
 
     for (int i=0; i<startTanksCount; ++i)
         bag->spawnTank(board);
-
-    emit playerHealthChanged(playerTank->health()->health());
-    emit enemyLeftChanged(bag->tanksLeft());
 
     return true;
 }

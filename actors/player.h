@@ -14,6 +14,8 @@ public:
     explicit Player(QObject *parent = 0);
 
     void setKey(Qt::Key key, bool value);
+    void bindKey(Qt::Key key, Control control);
+    void defaultBinings();
 
     void makeMove(Board* board, EntitiesBag* bag, Tank* tank);
 private:
