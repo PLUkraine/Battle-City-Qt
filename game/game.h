@@ -14,6 +14,9 @@ class Game : public QQuickPaintedItem
 {
     Q_OBJECT
 public:
+    enum GameError { NO_ERROR, LEVEL_NOT_FOUND, LEVEL_FILE_CORRUPTED };
+    Q_ENUM(GameError)
+
     Game(QQuickItem* parent=nullptr);
     virtual ~Game();
 
@@ -24,6 +27,8 @@ public:
     void keyReleaseEvent(QKeyEvent *event);
 
     static void registerInQML();
+
+    Q_INVOKABLE GameError getLastError() const;
 
 signals:
     void gameOver();
@@ -54,6 +59,7 @@ private:
     EntitiesBag* bag;
 
     bool m_game_created;
+    GameError m_lastError;
 };
 
 #endif // GAME_H

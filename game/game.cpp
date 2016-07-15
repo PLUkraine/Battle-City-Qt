@@ -14,9 +14,6 @@
 #include "factories/tankfactory.h"
 #include "factories/explosionfactory.h"
 
-const qreal WINDOW_W = 690;
-const qreal WINDOW_H = 690;
-
 std::random_device rd;
 std::mt19937 gen(rd());
 std::uniform_real_distribution<double> dist(0.0,1.0);
@@ -25,7 +22,8 @@ Game::Game(QQuickItem *parent)
     : QQuickPaintedItem(parent),
       board(nullptr),
       player(nullptr),
-      bag(nullptr)
+      bag(nullptr),
+      m_lastError(NO_ERROR)
 {
     connect(&timer, SIGNAL(timeout()), this, SLOT(updateGame()));
 }
@@ -134,6 +132,9 @@ void Game::cleanup()
 bool Game::loadLevel(QString filename)
 {
     QFile inFile(filename);
+    if (!inFile.exists()) {
+        m_lastError = LEVEL_NOT_FOUND;
+    }
     inFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QByteArray val = inFile.readAll();
     inFile.close();
@@ -142,6 +143,7 @@ bool Game::loadLevel(QString filename)
     QJsonObject root = QJsonDocument::fromJson(val, &er).object();
     // if error occurred, abort level creation
     if (er.error != QJsonParseError::NoError) {
+        m_lastError = LEVEL_FILE_CORRUPTED;
         return false;
     }
 
@@ -179,6 +181,11 @@ bool Game::loadLevel(QString filename)
         bag->spawnTank(board);
 
     return true;
+}
+
+Game::GameError Game::getLastError() const
+{
+    return m_lastError;
 }
 
 

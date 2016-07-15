@@ -5,6 +5,7 @@ import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
 
 import BattleCity 1.0
+import "/js/callbacks.js" as Callbacks
 
 Window {
     visible: true
@@ -25,11 +26,11 @@ Window {
             spacing: 6
             Button {
                 text: "Start new game"
-                onClicked: gameObj.createAndStartGame(":/levels/level1.json")
+                onClicked: Callbacks.createGame(gameObj, gameErrorMessage);
             }
             Button {
                 text: "Pause/resume game"
-                onClicked: gameObj.pauseOrResumeGame()
+                onClicked: gameObj.pauseOrResumeGame();
             }
 
             Label {
@@ -72,14 +73,12 @@ Window {
         title: "Game over!"
         text: "You lost! Try again?"
         standardButtons: StandardButton.No | StandardButton.Yes
-        onYes: {
-            gameObj.createAndStartGame(":/levels/level1.json");
-        }
-        onNo: {
+        onYes:
+            Callbacks.createGame(gameObj, gameErrorMessage);
+        onNo:
             Qt.quit();
-        }
         onAccepted:
-            gameObj.createAndStartGame(":/levels/level1.json");
+            Callbacks.createGame(gameObj, gameErrorMessage);
         onRejected:
             Qt.quit();
     }
@@ -88,16 +87,18 @@ Window {
         title: "You won!"
         text: "Good job! Want to try again?"
         standardButtons: StandardButton.No | StandardButton.Yes
-        onYes: {
-            gameObj.createAndStartGame(":/levels/level1.json");
-        }
-        onNo: {
+        onYes:
+            Callbacks.createGame(gameObj, gameErrorMessage);
+        onNo:
             Qt.quit();
-        }
         onAccepted:
-            gameObj.createAndStartGame(":/levels/level1.json");
+            Callbacks.createGame(gameObj, gameErrorMessage);
         onRejected:
             Qt.quit();
+    }
+    MessageDialog {
+        id: gameErrorMessage
+        title: "Error occured"
     }
 
     Game {
@@ -110,37 +111,10 @@ Window {
         }
         focus: true
         visible: true
-        onGameOver: {
+        onGameOver:
             gameOverDialog.visible = true;
-        }
-        onVictory: {
+        onVictory:
             victoryDialog.visible = true;
-        }
-        Component.onCompleted: {
-            gameObj.playerHealthChanged.connect(function(h) {
-                healthBar.value = h;
-            });
-            gameObj.enemyLeftChanged.connect(function(en) {
-               enemiesLeftBar.value = en;
-            });
-            gameObj.gameStarted.connect(function (h, en) {
-                healthBar.maximumValue = h;
-                healthBar.value = h;
-                enemiesLeftBar.maximumValue = en;
-                enemiesLeftBar.value = en;
-            });
-        }
-
+        Component.onCompleted: Callbacks.connectGameToBars(gameObj, healthBar, enemiesLeftBar)
     }
-
-//    MainForm {
-//        Game {
-
-//        }
-
-//        anchors.fill: parent
-//        mouseArea.onClicked: {
-//            Qt.quit();
-//        }
-//    }
 }
